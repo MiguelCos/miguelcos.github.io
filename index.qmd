@@ -2,6 +2,15 @@
 title: "Miguel Cosenza Contreras"
 description: "Proteomics data scientist developing bioinformatic pipelines for protein interactions, proteolytic activity, and mass-spectrometry-based proteomics research."
 page-layout: full
+format:
+  html:
+    include-in-header:
+      text: |
+        <style>
+        #quarto-document-content > #title-block-header {
+          display: none;
+        }
+        </style>
 ---
 
 ::: {.hero}
