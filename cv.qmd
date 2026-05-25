@@ -7,20 +7,24 @@ description: "Public CV for Miguel Cosenza Contreras."
 
 ## Miguel Cosenza Contreras
 
-Proteomics bioinformatician and data scientist  
+Proteomics data scientist  
 Freiburg im Breisgau, Germany  
 [migueljcc5@gmail.com](mailto:migueljcc5@gmail.com) | [GitHub](https://github.com/MiguelCos) | [ORCID](https://orcid.org/0000-0002-9727-3229) | [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl) | [LinkedIn](https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/)
 
 ## Profile
 
-Biologist by training and proteomics bioinformatician with more than five years of experience in applied proteomics bioinformatics, especially clinical proteomics. Research interests include statistical and reproducible data analysis workflows for proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics integration.
+Proteomics data scientist with over six years of experience in clinical and experimental research. Trained as a biologist, I work at the interface of experimental design and data analysis, with a focus on mass-spectrometry-based proteomics for protein interaction research, cancer, cardiac disease, and infection biology.
+
+At the University of Freiburg, within SFB1381 - Dynamic Organization of Cellular Protein Machineries and the Laboratory of Protease Degradomics, I build and maintain bioinformatic pipelines for studying protein interactions and proteolytic activity. My work includes complexome and blue-native mass spectrometry data analysis workflows, co-immunoprecipitation proteomics, and the integrative analysis of proteomics, terminomics, lipidomics, and proteogenomics data.
 
 ## Current Position
 
 **Postdoctoral researcher / Bioinformatician**  
-Laboratory of Protease Degradomics and SFB1381, Faculty of Biology, University of Freiburg  
+Laboratory of Protease Degradomics and SFB1381 - Dynamic Organization of Cellular Protein Machineries, Faculty of Biology, University of Freiburg  
 Supervisor/PI: Prof. Dr. Pitter Huesgen  
-2024-present
+April 2024-present
+
+Evaluation, establishment, and application of bioinformatic pipelines for studying protein interactions and proteolytic activity. Work includes complexome profiling analysis, co-immunoprecipitation assays, blue-native gel mass spectrometry experiments, and shotgun mass-spectrometry-based proteomics workflows.
 
 ## Employment
 
@@ -67,11 +71,11 @@ Five-year program. 2nd in promotion.
 
 ## Skills
 
-- Proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics analysis.
-- Statistical analysis of mass-spectrometry-based proteomics data.
-- Differential abundance analysis, enrichment analysis, data visualization, and reproducible reporting.
-- R, Quarto, Git/GitHub, and scientific workflow organization.
-- Analysis workflows for FragPipe, DIA-NN, Spectronaut, MaxQuant/MSstats-style outputs, and related proteomics data structures.
+- R, Bioconductor, Quarto/Markdown, R package development, Git/GitHub, VS Code, RStudio, and scientific workflow organization.
+- Data mining, exploratory statistics, data modeling, machine learning, data visualization, and reproducible reporting.
+- Integrative analysis of proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics data.
+- Mass-spectrometry-based proteomics, including complexome profiling, blue-native MS data analysis workflows, co-immunoprecipitation proteomics, experimental design, sample preparation, TMT and label-free quantification, and proteogenomics.
+- Analysis workflows for HPLC-ESI-MS/MS, Q Exactive, timsTOF, FragPipe, DIA-NN, Spectronaut, MaxQuant/MSstats-style outputs, and related proteomics data structures.
 
 ## Languages
 

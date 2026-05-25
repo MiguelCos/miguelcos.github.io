@@ -1,6 +1,6 @@
 ---
 title: "Miguel Cosenza Contreras"
-description: "Proteomics bioinformatician and data scientist working on clinical proteomics, proteolytic processing, and reproducible multi-omics workflows."
+description: "Proteomics data scientist developing bioinformatic pipelines for protein interactions, proteolytic activity, and mass-spectrometry-based proteomics research."
 page-layout: full
 ---
 
@@ -8,7 +8,7 @@ page-layout: full
 ::: {}
 # Miguel Cosenza Contreras
 
-Proteomics bioinformatician and data scientist working on clinical proteomics, proteolytic processing, and reproducible multi-omics workflows.
+Proteomics data scientist developing bioinformatic pipelines for protein interactions, proteolytic activity, and mass-spectrometry-based proteomics research.
 
 :::{.button-row}
 [CV](cv.qmd){.primary}
@@ -25,31 +25,36 @@ Freiburg im Breisgau, Germany
 :::
 :::
 
-I am a biologist by training and a proteomics bioinformatician with more than five years of experience in applied proteomics bioinformatics, especially in clinical proteomics. My work connects experimental and clinical questions with computational analysis of high-throughput mass-spectrometry-based proteomics data.
+I am a biologist by training and a proteomics data scientist with over six years of experience in clinical and experimental research. I work at the interface of experimental design and data analysis, focusing on mass-spectrometry-based proteomics in protein interaction research, cancer, cardiac disease, and infection biology.
 
-I develop and apply statistical and reproducible data analysis workflows for proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics integration, with applications in cancer, cardiac disease, host-parasite interactions, protease biology, and protein interaction research.
+At the University of Freiburg, within SFB1381 - Dynamic Organization of Cellular Protein Machineries and the Laboratory of Protease Degradomics, I build and maintain bioinformatic pipelines for studying protein interactions and proteolytic activity. This includes complexome profiling, co-immunoprecipitation assays, blue-native gel mass spectrometry experiments, and integrative analysis of proteomics, terminomics, lipidomics, and proteogenomics data.
 
 ## Current Research Focus
 
 ::: {.content-grid}
 ::: {.info-card}
-### Clinical Proteomics
-Translational biomarker discovery and disease-mechanism studies using mass-spectrometry-based proteomics.
+### Protein Complexes
+Pipelines for studying protein-protein interactions from shotgun mass-spectrometry-based proteomics data, including complexome and co-immunoprecipitation experiments.
 :::
 
 ::: {.info-card}
 ### Protease Degradomics
-Proteolytic processing, terminomics, and degradomics workflows for studying protease biology.
+Bioinformatic analysis of proteolytic activity, protein termini, and degradomics workflows across experimental systems.
 :::
 
 ::: {.info-card}
 ### Multi-omics Integration
-Integrated analysis across proteomics, lipidomics, proteogenomics, and clinical data.
+Statistical and computational integration across proteomics, terminomics, lipidomics, proteogenomics, and clinical data.
 :::
 
 ::: {.info-card}
 ### Reproducible Workflows
-R and Quarto workflows for transparent, reusable mass-spectrometry data analysis.
+R, Bioconductor, Quarto, and GitHub workflows for transparent, reusable mass-spectrometry data analysis.
+:::
+
+::: {.info-card}
+### Clinical Proteomics
+Translational biomarker discovery and disease-mechanism studies using mass-spectrometry-based proteomics.
 :::
 :::
 

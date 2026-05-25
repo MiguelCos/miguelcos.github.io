@@ -3,11 +3,11 @@ title: "About"
 description: "Professional profile of Miguel Cosenza Contreras."
 ---
 
-Miguel Cosenza Contreras is a proteomics bioinformatician and data scientist based in Freiburg im Breisgau, Germany. He works at the interface between experimental and clinical questions and computational analysis of high-throughput mass-spectrometry-based proteomics data.
+Miguel Cosenza Contreras is a proteomics data scientist based in Freiburg im Breisgau, Germany. Trained as a biologist, he works at the interface of experimental design and data analysis, with a focus on mass-spectrometry-based proteomics in protein interaction research, cancer, cardiac disease, and infection biology.
 
-Miguel trained as a biologist and developed a research profile focused on applied proteomics bioinformatics, clinical proteomics, and reproducible data analysis. His work spans proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics integration, with applications in cancer biology, cardiac disease, host-parasite interactions, protease biology, and protein interaction research.
+Miguel has over six years of experience in clinical and experimental research. His work involves developing and applying statistical and computational methods for the integrative analysis of proteomics, terminomics, lipidomics, and proteogenomics data.
 
-Since 2024, Miguel has worked as a postdoctoral researcher / bioinformatician in the Laboratory of Protease Degradomics and SFB1381 at the Faculty of Biology, University of Freiburg, with Prof. Dr. Pitter Huesgen. His current work focuses on proteolytic processing, terminomics, protease degradomics, and protein interaction research in the context of SFB1381.
+Since April 2024, Miguel has worked as a postdoctoral researcher / bioinformatician in the Laboratory of Protease Degradomics and SFB1381 - Dynamic Organization of Cellular Protein Machineries at the Faculty of Biology, University of Freiburg, with Prof. Dr. Pitter Huesgen. His current work focuses on building and maintaining bioinformatic pipelines for studying protein interactions and proteolytic activity, including complexome profiling, co-immunoprecipitation assays, blue-native gel mass spectrometry experiments, and shotgun mass-spectrometry-based proteomics data analysis.
 
 From 2019 to 2024, he was a doctoral researcher in the Laboratory of Translational Proteomics at the Institute of Surgical Pathology, University Medical Center Freiburg, supervised by Prof. Dr. Oliver Schilling. His doctoral work focused on proteomics data science and multi-omics data integration for exploratory insight into disease mechanisms.
 
@@ -17,22 +17,27 @@ A recurring theme across his work is reproducibility: using R, Quarto, transpare
 
 ::: {.content-grid}
 ::: {.info-card}
-### Clinical Proteomics
-Quantitative proteomics and biomarker-oriented analysis in translational disease studies.
+### Protein Complexes
+Bioinformatic pipelines for studying protein-protein interactions from shotgun proteomics, complexome profiling, co-immunoprecipitation, and blue-native gel mass spectrometry experiments.
 :::
 
 ::: {.info-card}
 ### Proteolytic Processing
-Computational analysis of protein termini, cleavage events, and protease activity.
+Computational analysis of protein termini, cleavage events, proteolytic activity, and degradomics experiments.
 :::
 
 ::: {.info-card}
 ### Multi-omics Data Science
-Integration of proteomics with lipidomics, proteogenomics, and clinical variables.
+Statistical and computational integration of proteomics with terminomics, lipidomics, proteogenomics, and clinical variables.
 :::
 
 ::: {.info-card}
 ### Reproducible Analysis
-Human-readable R and Quarto workflows for mass-spectrometry data analysis.
+Human-readable R, Bioconductor, Quarto, Markdown, and GitHub workflows for mass-spectrometry data analysis.
+:::
+
+::: {.info-card}
+### Clinical Proteomics
+Quantitative proteomics and biomarker-oriented analysis in translational disease studies.
 :::
 :::
