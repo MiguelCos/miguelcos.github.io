@@ -27,10 +27,14 @@ Proteomics data scientist developing bioinformatic pipelines for protein interac
 :::
 :::
 
+::: {.hero-aside}
+![Miguel Cosenza Contreras](assets/miguelcos_personal_pic-900.jpg){.hero-photo}
+
 ::: {.hero-meta}
 Freiburg im Breisgau, Germany  
 [migueljcc5@gmail.com](mailto:migueljcc5@gmail.com)  
 [GitHub](https://github.com/MiguelCos) | [ORCID](https://orcid.org/0000-0002-9727-3229) | [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl) | [LinkedIn](https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/)
+:::
 :::
 :::
 

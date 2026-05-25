@@ -58,6 +58,25 @@ h1, h2, h3 {
   max-width: 58rem;
 }
 
+.hero-aside {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.hero-aside p {
+  margin: 0;
+}
+
+.hero-photo {
+  aspect-ratio: 3 / 2;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
 .hero-meta {
   border-left: 4px solid var(--site-accent);
   padding-left: 1.25rem;
