@@ -1,0 +1,116 @@
+---
+title: "Miguel Cosenza Contreras"
+description: "Proteomics bioinformatician and data scientist working on clinical proteomics, proteolytic processing, and reproducible multi-omics workflows."
+page-layout: full
+---
+
+::: {.hero}
+::: {}
+# Miguel Cosenza Contreras
+
+Proteomics bioinformatician and data scientist working on clinical proteomics, proteolytic processing, and reproducible multi-omics workflows.
+
+:::{.button-row}
+[CV](cv.qmd){.primary}
+[Publications](publications.qmd)
+[Projects](projects.qmd)
+[Email](mailto:migueljcc5@gmail.com)
+:::
+:::
+
+::: {.hero-meta}
+Freiburg im Breisgau, Germany  
+[migueljcc5@gmail.com](mailto:migueljcc5@gmail.com)  
+[GitHub](https://github.com/MiguelCos) | [ORCID](https://orcid.org/0000-0002-9727-3229) | [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl) | [LinkedIn](https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/)
+:::
+:::
+
+I am a biologist by training and a proteomics bioinformatician with more than five years of experience in applied proteomics bioinformatics, especially in clinical proteomics. My work connects experimental and clinical questions with computational analysis of high-throughput mass-spectrometry-based proteomics data.
+
+I develop and apply statistical and reproducible data analysis workflows for proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics integration, with applications in cancer, cardiac disease, host-parasite interactions, protease biology, and protein interaction research.
+
+## Current Research Focus
+
+::: {.content-grid}
+::: {.info-card}
+### Clinical Proteomics
+Translational biomarker discovery and disease-mechanism studies using mass-spectrometry-based proteomics.
+:::
+
+::: {.info-card}
+### Protease Degradomics
+Proteolytic processing, terminomics, and degradomics workflows for studying protease biology.
+:::
+
+::: {.info-card}
+### Multi-omics Integration
+Integrated analysis across proteomics, lipidomics, proteogenomics, and clinical data.
+:::
+
+::: {.info-card}
+### Reproducible Workflows
+R and Quarto workflows for transparent, reusable mass-spectrometry data analysis.
+:::
+:::
+
+## Selected Publications
+
+::: {.card-grid}
+::: {.publication-card}
+### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
+Software and method paper for extracting endogenous proteolytic processing information from shotgun proteomics.
+
+[DOI](https://doi.org/10.1002/pmic.202300491) | [Project](https://github.com/MiguelCos/TermineR)
+:::
+
+::: {.publication-card}
+### Proteometabolomics of initial and recurrent glioblastoma
+Clinical proteomics and multi-omics integration study of recurrent glioblastoma biology.
+
+[DOI](https://doi.org/10.1093/neuonc/noad208) | [Project](https://github.com/MiguelCos/gbm_manuscript_data_analysis)
+:::
+
+::: {.publication-card}
+### The Schistosomiasis SpleenOME
+Label-free proteomics study of splenomegaly in host-parasite interaction.
+
+[DOI](https://doi.org/10.3389/fimmu.2018.03137)
+:::
+:::
+
+## Selected Projects
+
+::: {.card-grid}
+::: {.project-card}
+### TermineR
+R package for extracting and annotating endogenous proteolytic processing information from shotgun proteomics data.
+
+:::{.tags}
+[`R`]{.tag} [`proteomics`]{.tag} [`terminomics`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/TermineR) | [Project page](projects/terminer/)
+:::
+
+::: {.project-card}
+### GBM Proteometabolomics
+Reproducible analysis repository for proteomics, lipidomics, proteogenomics, and clinical integration in recurrent glioblastoma.
+
+:::{.tags}
+[`R`]{.tag} [`clinical proteomics`]{.tag} [`multi-omics`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/gbm_manuscript_data_analysis) | [Project page](projects/gbm-proteometabolomics/)
+:::
+
+::: {.project-card}
+### HUNTER Data Analysis Pipeline
+Quarto and R workflows for exploratory and inferential analysis of HUNTER terminal-enrichment experiments.
+
+:::{.tags}
+[`Quarto`]{.tag} [`terminomics`]{.tag} [`DIA`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline) | [Project page](projects/hunter/)
+:::
+:::

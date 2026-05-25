@@ -1,0 +1,22 @@
+---
+title: "enrichRoast"
+description: "Scripts and functions for limma::roast enrichment analyses."
+---
+
+enrichRoast contains scripts and functions for running `limma::roast` rotation gene set tests as part of proteomics workflows and producing tabular outputs and visualizations.
+
+The repository supports enrichment analysis against gene set databases including GO, Reactome, KEGG, and MSigDB, with options for subcategories, gene-set size filters, p-value cutoffs, and filtering of redundant or non-interesting terms.
+
+## Highlights
+
+- Enrichment analysis utilities for proteomics workflows.
+- Designed around `limma::roast` and MSstats-style data processing.
+- Outputs include tables, figures, and reports.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/enrichRoast)
+
+:::{.tags}
+[`R`]{.tag} [`enrichment analysis`]{.tag} [`limma`]{.tag} [`MSstats`]{.tag}
+:::

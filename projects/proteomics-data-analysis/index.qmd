@@ -1,0 +1,22 @@
+---
+title: "Proteomics Data Analysis"
+description: "Scripts, functions, and snippets for processing and analyzing proteomics data."
+---
+
+This repository collects scripts, functions, and snippets useful for processing and analyzing different types of proteomics data.
+
+The public README currently highlights utility scripts for basic MaxQuant output checks, including counts of protein groups and peptide-spectrum matches with target-decoy information.
+
+## Highlights
+
+- General proteomics data-analysis utilities.
+- Early reusable code collection for processing and checking proteomics outputs.
+- Practical scripts for common mass-spectrometry data-analysis tasks.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/1_Proteomics_data_analysis)
+
+:::{.tags}
+[`R`]{.tag} [`proteomics`]{.tag} [`utilities`]{.tag}
+:::

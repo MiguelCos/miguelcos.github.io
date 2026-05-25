@@ -1,0 +1,91 @@
+---
+title: "Projects"
+description: "Selected GitHub projects by Miguel Cosenza Contreras."
+---
+
+Selected public GitHub projects related to proteomics bioinformatics, terminomics, clinical multi-omics, and reproducible analysis.
+
+::: {.card-grid}
+::: {.project-card}
+### TermineR
+R package for extracting, annotating, and visualizing endogenous proteolytic processing information from shotgun proteomics data.
+
+:::{.tags}
+[`R`]{.tag} [`proteomics`]{.tag} [`terminomics`]{.tag} [`software`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/TermineR) | [Project page](projects/terminer/)
+:::
+
+::: {.project-card}
+### TermineR Data Analysis Pipeline
+Reproducible analysis pipeline connected to the TermineR method paper and example workflows.
+
+:::{.tags}
+[`R`]{.tag} [`Quarto`]{.tag} [`reproducibility`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/TermineR_data_analysis_pipeline)
+:::
+
+::: {.project-card}
+### GBM Proteometabolomics
+Reproducible analysis for proteomics, lipidomics, proteogenomics, and clinical integration in initial and recurrent glioblastoma.
+
+:::{.tags}
+[`clinical proteomics`]{.tag} [`multi-omics`]{.tag} [`R`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/gbm_manuscript_data_analysis) | [Project page](projects/gbm-proteometabolomics/)
+:::
+
+::: {.project-card}
+### HUNTER Data Analysis Pipeline
+RStudio and Quarto workflow for exploratory and inferential analysis of HUNTER terminal-enrichment experiments.
+
+:::{.tags}
+[`Quarto`]{.tag} [`DIA`]{.tag} [`terminomics`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline) | [Project page](projects/hunter/)
+:::
+
+::: {.project-card}
+### Necrodegradomics
+Reproducible analysis of proteome alterations in human autopsy tissues in relation to time after death.
+
+:::{.tags}
+[`tissue proteomics`]{.tag} [`limma`]{.tag} [`reproducible report`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/Necrodegradomics) | [Project page](projects/necrodegradomics/)
+:::
+
+::: {.project-card}
+### enrichRoast
+Scripts and functions to run limma::roast enrichment analyses and generate tabular outputs and visualizations.
+
+:::{.tags}
+[`R`]{.tag} [`enrichment analysis`]{.tag} [`limma`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/enrichRoast) | [Project page](projects/enrichroast/)
+:::
+
+::: {.project-card}
+### Proteomics Data Analysis
+Collection of scripts, functions, and snippets for processing and analyzing proteomics data.
+
+:::{.tags}
+[`R`]{.tag} [`proteomics`]{.tag} [`utilities`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/1_Proteomics_data_analysis) | [Project page](projects/proteomics-data-analysis/)
+:::
+:::
+
+## Additional Public Repositories
+
+- [Fragterminomics](https://github.com/MiguelCos/Fragterminomics)
+- [fragenterminomics](https://github.com/MiguelCos/fragenterminomics)
+- [BAG3 turboID proteomics differential abundance analysis](https://github.com/MiguelCos/BAG3_turboID_proteomics-Differential-abundance-analysis)

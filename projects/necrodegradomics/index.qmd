@@ -1,0 +1,24 @@
+---
+title: "Necrodegradomics"
+description: "Reproducible analysis of proteome alterations in human autopsy tissues in relation to time after death."
+---
+
+Necrodegradomics contains code and reproducible reports for analysis of protein abundance in autopsied tissue and its association with time after death.
+
+The analysis identified proteins with apparent increased or decreased abundance across degradation time in kidney, liver, and lung tissues, using linear models implemented with `limma`.
+
+## Highlights
+
+- Tissue proteomics in human autopsy samples.
+- Analysis of protein abundance behavior over degradation time.
+- Reproducible reporting and visualization.
+- Related to the 2023 *Cellular and Molecular Life Sciences* publication.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/Necrodegradomics)
+- [Publication DOI](https://doi.org/10.1007/s00018-023-04754-3)
+
+:::{.tags}
+[`tissue proteomics`]{.tag} [`limma`]{.tag} [`sample quality`]{.tag}
+:::

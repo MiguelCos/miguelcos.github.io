@@ -1,0 +1,13 @@
+---
+title: "Notes"
+description: "Future technical notes and posts by Miguel Cosenza Contreras."
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  categories: true
+---
+
+Project notes, technical writeups, and occasional personal posts will appear here.
+
+No posts are published yet.

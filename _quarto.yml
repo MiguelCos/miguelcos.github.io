@@ -1,0 +1,54 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Miguel Cosenza Contreras"
+  site-url: "https://miguelcos.github.io"
+  description: "Personal professional website of Miguel Cosenza Contreras, a proteomics bioinformatician and data scientist in Freiburg, Germany."
+  favicon: assets/favicon.svg
+  repo-url: "https://github.com/MiguelCos/miguelcos.github.io"
+  navbar:
+    background: light
+    pinned: true
+    left:
+      - text: Home
+        href: index.qmd
+      - text: About
+        href: about.qmd
+      - text: CV
+        href: cv.qmd
+      - text: Publications
+        href: publications.qmd
+      - text: Projects
+        href: projects.qmd
+      - text: Notes
+        href: posts.qmd
+      - text: Contact
+        href: contact.qmd
+    right:
+      - icon: github
+        href: "https://github.com/MiguelCos"
+        aria-label: GitHub
+      - icon: linkedin
+        href: "https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/"
+        aria-label: LinkedIn
+  page-footer:
+    left: "(c) Miguel Cosenza Contreras"
+    right:
+      - text: GitHub
+        href: "https://github.com/MiguelCos"
+      - text: ORCID
+        href: "https://orcid.org/0000-0002-9727-3229"
+
+format:
+  html:
+    theme:
+      - cosmo
+      - styles.scss
+    toc: true
+    link-external-newwindow: true
+    smooth-scroll: true
+    code-copy: true
+
+author: "Miguel Cosenza Contreras"

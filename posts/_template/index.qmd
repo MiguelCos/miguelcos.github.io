@@ -1,0 +1,9 @@
+---
+title: "Post Title"
+description: "Short description for previews and search."
+date: 2026-01-01
+categories: [proteomics, reproducibility]
+draft: true
+---
+
+Start with the main point, then add context, code, figures, or references as needed.

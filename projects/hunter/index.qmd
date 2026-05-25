@@ -1,0 +1,23 @@
+---
+title: "HUNTER Data Analysis Pipeline"
+description: "RStudio and Quarto workflow for HUNTER terminal-enrichment experiments."
+---
+
+The HUNTER data analysis pipeline provides scripts and reproducible Quarto reports for initial processing and analysis of HUNTER experiments.
+
+The workflow is based on the TermineR approach, with modifications for terminally enriched samples. It includes reports for labeling efficiency, exploratory analysis, and inferential analysis after FragPipe-DIA and DIA-NN quantitation.
+
+## Highlights
+
+- Quarto reports designed for exploratory and inferential analysis.
+- Workflows for N-terminally enriched data.
+- Support for feature filtering, imputation, `limma` analysis, and annotation.
+- Zenodo DOI: [10.5281/zenodo.15410796](https://doi.org/10.5281/zenodo.15410796).
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline)
+
+:::{.tags}
+[`Quarto`]{.tag} [`DIA`]{.tag} [`terminomics`]{.tag} [`HUNTER`]{.tag}
+:::

@@ -1,0 +1,80 @@
+---
+title: "CV"
+description: "Public CV for Miguel Cosenza Contreras."
+---
+
+<!-- TODO: Add a private PDF CV later if desired, after manual privacy review. -->
+
+## Miguel Cosenza Contreras
+
+Proteomics bioinformatician and data scientist  
+Freiburg im Breisgau, Germany  
+[migueljcc5@gmail.com](mailto:migueljcc5@gmail.com) | [GitHub](https://github.com/MiguelCos) | [ORCID](https://orcid.org/0000-0002-9727-3229) | [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl) | [LinkedIn](https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/)
+
+## Profile
+
+Biologist by training and proteomics bioinformatician with more than five years of experience in applied proteomics bioinformatics, especially clinical proteomics. Research interests include statistical and reproducible data analysis workflows for proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics integration.
+
+## Current Position
+
+**Postdoctoral researcher / Bioinformatician**  
+Laboratory of Protease Degradomics and SFB1381, Faculty of Biology, University of Freiburg  
+Supervisor/PI: Prof. Dr. Pitter Huesgen  
+2024-present
+
+## Employment
+
+**Doctoral researcher**  
+Laboratory of Translational Proteomics, Institute of Surgical Pathology, University Medical Center Freiburg  
+Supervisor/PI: Prof. Dr. Oliver Schilling  
+2019-2024
+
+**Research Assistant**  
+Laboratory of Enzymology and Proteomics, Universidade Federal de Ouro Preto, Brazil  
+Supervisor/PI: Prof. Dr. William de Castro Borges  
+2019
+
+## Education
+
+**PhD in Biology**  
+University of Freiburg / University Medical Center Freiburg, 2019-2024  
+Focus: proteomics data science, bioinformatics, and multi-omics data integration.  
+Dissertation: *Proteomics data science and multi-omics data integration for enhanced exploratory insights of disease mechanisms.*  
+Grade: summa cum laude.
+
+**MSc in Biological Sciences**  
+Federal University of Ouro Preto, Brazil, 2017-2019  
+Focus: structural biochemistry and molecular biology.  
+Project: Proteomics analysis of spleen during parasitic infection.  
+GPA: 3.78/4.0; 91%.
+
+**BSc in Biology**  
+University of Carabobo, Venezuela, 2009-2015  
+Five-year program. 2nd in promotion.
+
+## Selected Publications
+
+- Cosenza-Contreras M. et al. 2024. TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data. *Proteomics* 24(19). [DOI: 10.1002/pmic.202300491](https://doi.org/10.1002/pmic.202300491).
+- Cosenza-Contreras M. et al. 2024. Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism. *Neuro-Oncology* 26(3):488-502. [DOI: 10.1093/neuonc/noad208](https://doi.org/10.1093/neuonc/noad208).
+- Cosenza-Contreras M. et al. 2018/2019. The Schistosomiasis SpleenOME: Unveiling the Proteomic Landscape of Splenomegaly Using Label-Free Mass Spectrometry. *Frontiers in Immunology* 9:3137. [DOI: 10.3389/fimmu.2018.03137](https://doi.org/10.3389/fimmu.2018.03137).
+- Kocsmar E., Schmid M., Cosenza-Contreras M. et al. 2023. Proteome alterations in human autopsy tissues in relation to time after death. *Cellular and Molecular Life Sciences* 80:117. [DOI: 10.1007/s00018-023-04754-3](https://doi.org/10.1007/s00018-023-04754-3).
+
+## Awards
+
+- PAEC OAS-GCUB scholarship for MSc, 2017-2019.
+- Travel fellowship, International Proteolysis Society Conference 2023, Singapore.
+- Travel fellowship, ISCB-LA-SoIBio-EMBNet Joint Bioinformatics Conference 2018, CABANA Project and Global Challenges Research Fund.
+
+## Skills
+
+- Proteomics, terminomics, lipidomics, proteogenomics, and clinical multi-omics analysis.
+- Statistical analysis of mass-spectrometry-based proteomics data.
+- Differential abundance analysis, enrichment analysis, data visualization, and reproducible reporting.
+- R, Quarto, Git/GitHub, and scientific workflow organization.
+- Analysis workflows for FragPipe, DIA-NN, Spectronaut, MaxQuant/MSstats-style outputs, and related proteomics data structures.
+
+## Languages
+
+- Spanish: native.
+- English: fluent.
+- Portuguese: fluent.

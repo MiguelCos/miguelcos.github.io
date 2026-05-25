@@ -1,0 +1,45 @@
+---
+title: "Publications"
+description: "Selected publications by Miguel Cosenza Contreras."
+---
+
+Selected publications are listed first with a short note on their role in Miguel's research profile. DOI links are included where known and verified.
+
+## Selected Publications
+
+::: {.publication-card}
+### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
+**Cosenza-Contreras M. et al. 2024.** *Proteomics* 24(19). [DOI: 10.1002/pmic.202300491](https://doi.org/10.1002/pmic.202300491)
+
+Software and method paper connected to the [TermineR](https://github.com/MiguelCos/TermineR) R package. It reflects Miguel's work on turning shotgun proteomics data into interpretable information on endogenous proteolytic processing.
+:::
+
+::: {.publication-card}
+### Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism
+**Cosenza-Contreras M. et al. 2024.** *Neuro-Oncology* 26(3):488-502. [DOI: 10.1093/neuonc/noad208](https://doi.org/10.1093/neuonc/noad208)
+
+Clinical proteomics and multi-omics integration study combining proteomics, lipidomics, proteogenomics, and clinical interpretation in recurrent glioblastoma.
+:::
+
+::: {.publication-card}
+### The Schistosomiasis SpleenOME: Unveiling the Proteomic Landscape of Splenomegaly Using Label-Free Mass Spectrometry
+**Cosenza-Contreras M. et al. 2018/2019.** *Frontiers in Immunology* 9:3137. [DOI: 10.3389/fimmu.2018.03137](https://doi.org/10.3389/fimmu.2018.03137)
+
+Host-parasite interaction and label-free proteomics study from Miguel's earlier work in biological sciences and proteomics.
+:::
+
+::: {.publication-card}
+### Proteome alterations in human autopsy tissues in relation to time after death
+**Kocsmar E., Schmid M., Cosenza-Contreras M. et al. 2023.** *Cellular and Molecular Life Sciences* 80:117. [DOI: 10.1007/s00018-023-04754-3](https://doi.org/10.1007/s00018-023-04754-3)
+
+Tissue proteomics study relevant to degradation, translational sample quality, and interpretation of post-mortem tissue proteomes.
+:::
+
+## Profiles
+
+- [ORCID](https://orcid.org/0000-0002-9727-3229)
+- [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl)
+
+## Expanded List
+
+The selected list above is intentionally compact. Future updates can expand this page using ORCID, Google Scholar, PubMed, Crossref, or manually curated BibTeX/CSL metadata.

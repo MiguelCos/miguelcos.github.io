@@ -1,0 +1,24 @@
+---
+title: "TermineR"
+description: "R package for extracting information on endogenous proteolytic processing from shotgun proteomics data."
+---
+
+TermineR is an R package for extracting, annotating, and visualizing information on endogenous proteolytic processing from shotgun proteomics data.
+
+The package provides adapter functions for common search engine outputs, peptide annotation against protein sequences, and downstream visualization and differential abundance workflows for proteolytic products.
+
+## Highlights
+
+- Adapter functions for FragPipe, DIA-NN, and Spectronaut search results.
+- Annotation of peptide termini, cleavage sites, specificity, and processing information.
+- Functions for visualizing cleavage-site sequence context.
+- Connected to the 2024 *Proteomics* method paper.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/TermineR)
+- [Publication DOI](https://doi.org/10.1002/pmic.202300491)
+
+:::{.tags}
+[`R`]{.tag} [`proteomics`]{.tag} [`terminomics`]{.tag} [`protease degradomics`]{.tag}
+:::

@@ -1,0 +1,17 @@
+---
+title: "Contact"
+description: "Contact and professional links for Miguel Cosenza Contreras."
+---
+
+For professional contact, collaboration, and profile information:
+
+::: {.info-card}
+:::{.contact-list}
+- **Email:** [migueljcc5@gmail.com](mailto:migueljcc5@gmail.com)
+- **GitHub:** [MiguelCos](https://github.com/MiguelCos)
+- **ORCID:** [0000-0002-9727-3229](https://orcid.org/0000-0002-9727-3229)
+- **Google Scholar:** [Profile](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl)
+- **LinkedIn:** [Miguel Cosenza Contreras](https://www.linkedin.com/in/miguel-cosenza-contreras-972414114/)
+- **Location:** Freiburg, Germany
+:::
+:::

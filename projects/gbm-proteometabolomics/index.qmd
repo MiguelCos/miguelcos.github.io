@@ -1,0 +1,24 @@
+---
+title: "GBM Proteometabolomics"
+description: "Reproducible analysis for proteometabolomics of initial and recurrent glioblastoma."
+---
+
+This project contains reproducible analyses for the manuscript *Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism*.
+
+The repository includes reports for general proteomics analysis, large-scale proteolytic processing analysis, integrative lipidomics and proteomics, proteogenomics analyses, plasma ELISA proteomics, and single-cell RNA-seq data mining.
+
+## Highlights
+
+- Clinical proteomics and recurrent glioblastoma analysis.
+- Integration of proteomics, lipidomics, proteogenomics, and clinical data.
+- Reproducible report structure for manuscript-associated analyses.
+- Related to the *Neuro-Oncology* publication.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/gbm_manuscript_data_analysis)
+- [Publication DOI](https://doi.org/10.1093/neuonc/noad208)
+
+:::{.tags}
+[`clinical proteomics`]{.tag} [`multi-omics`]{.tag} [`glioblastoma`]{.tag} [`R`]{.tag}
+:::
