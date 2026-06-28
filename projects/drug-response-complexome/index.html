@@ -1,0 +1,2299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HSP90i SEC-MS Proteoform Viewer</title>
+  <style>
+    :root { color-scheme: light; --ink:#22252a; --muted:#666b74; --line:#d8dce2; --paper:#f5f7f8; --panel:#ffffff; --green:#2f7d5c; --blue:#2d6f98; --amber:#b98224; --red:#b54b42; --violet:#7756a4; --teal:#2f7f86; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--paper); color: var(--ink); }
+    header { padding: 16px 22px 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+    h1 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: 0; }
+    .subhead { margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    main { display: grid; grid-template-columns: minmax(270px, 350px) minmax(0, 1fr); min-height: calc(100vh - 72px); }
+    aside { border-right: 1px solid var(--line); background: #fbfcfd; padding: 14px; overflow: auto; }
+    section { padding: 14px 18px 22px; overflow: auto; }
+    label { display: block; margin: 0 0 5px; font-size: 12px; color: var(--muted); font-weight: 700; }
+    input, select, button { width: 100%; font: inherit; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); letter-spacing: 0; }
+    input, select { padding: 8px 9px; }
+    input[type="range"] { padding: 0; height: 30px; }
+    option { padding: 5px 7px; }
+    button { padding: 8px 10px; cursor: pointer; background: #edf0f2; }
+    button:hover { background: #e2e7ea; }
+    button.active { background: #dcebe4; border-color: #a8c9bb; color: #1f5d43; font-weight: 700; }
+    .control { margin-bottom: 13px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; margin-bottom: 12px; }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; min-width: 0; }
+    .metric strong { display: block; font-size: 19px; line-height: 1.1; overflow-wrap: anywhere; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tabs button { width: auto; min-width: 110px; }
+    .tab { display: none; }
+    .tab.active { display: block; }
+    .toolbar { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 10px; align-items: end; margin-bottom: 12px; }
+    .wide2 { grid-column: span 2; }
+    .viz { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; min-height: 500px; padding: 12px; position: relative; }
+    svg { width: 100%; height: 500px; display: block; }
+    .axis text { fill: var(--muted); font-size: 11px; }
+    .axis line, .axis path { stroke: var(--line); }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+    .legend i { display: inline-block; width: 22px; height: 3px; margin-right: 6px; vertical-align: middle; }
+    .protein-table-wrap { max-height: 300px; overflow: auto; border: 1px solid var(--line); background: var(--panel); }
+    .protein-table { margin: 0; border: 0; }
+    .protein-table th, .protein-table td { padding: 5px 6px; font-size: 11px; white-space: nowrap; }
+    .protein-table tr { cursor: pointer; }
+    .protein-table tbody tr:hover { background: #eef5f2; }
+    .protein-table tbody tr.selected { background: #dcebe4; }
+    .selected-proteins { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 0; }
+    .selected-chip { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; border: 1px solid #b9d4c8; border-radius: 4px; background: #eef6f2; color: #1f5d43; padding: 3px 5px 3px 7px; font-size: 11px; line-height: 1.2; }
+    .selected-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 170px; }
+    .selected-chip button { width: 14px; height: 14px; min-width: 14px; border: 0; border-radius: 3px; padding: 0; line-height: 12px; background: transparent; color: #1f5d43; opacity: 0; cursor: pointer; font-size: 12px; }
+    .selected-chip:hover button, .selected-chip button:focus { opacity: 1; background: #d6e9df; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; background: var(--panel); border: 1px solid var(--line); }
+    th, td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; font-size: 12px; vertical-align: top; overflow-wrap: anywhere; }
+    th { background: #eef1f3; color: var(--muted); font-weight: 700; }
+    .status { color: var(--muted); font-size: 13px; margin: 9px 0; line-height: 1.35; }
+    .error { color: var(--red); font-weight: 700; }
+    .empty { fill: var(--muted); font-size: 14px; }
+    #networkChart { touch-action: none; }
+    .network-viz { min-height: 800px; }
+    .network-viz svg { height: 780px; }
+    .node { cursor: grab; touch-action: none; }
+    .node.dragging { cursor: grabbing; }
+    .network-label { pointer-events: none; user-select: none; }
+    .network-edge-score { pointer-events: none; user-select: none; font-size: 9px; font-weight: 700; fill: #39424e; stroke: #ffffff; stroke-width: 3px; paint-order: stroke; stroke-linejoin: round; }
+    .tooltip { position: absolute; display: none; max-width: 310px; pointer-events: none; z-index: 10; background: #22252a; color: #ffffff; border-radius: 6px; padding: 8px 10px; font-size: 12px; line-height: 1.4; box-shadow: 0 8px 24px rgba(20, 26, 32, 0.22); }
+    .tooltip strong { display: block; margin-bottom: 4px; font-size: 12px; color: #ffffff; }
+    .tooltip span { display: block; color: #edf0f2; }
+    .evidence-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin: 14px 0 8px; }
+    .evidence-head strong { font-size: 13px; }
+    .evidence-head span { color: var(--muted); font-size: 12px; }
+    .evidence-viz { min-height: 340px; overflow-x: auto; }
+    .evidence-viz svg { height: 320px; min-width: 900px; }
+
+    .summary-panel { max-width: 980px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 22px 24px; line-height: 1.55; }
+    .summary-panel h2 { margin: 0 0 12px; font-size: 20px; }
+    .summary-panel h3 { margin: 22px 0 8px; font-size: 15px; }
+    .summary-panel p { margin: 8px 0; color: var(--ink); }
+    .summary-panel .citation { color: var(--muted); font-size: 12px; }
+    .screening-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .screening-head strong { font-size: 14px; }
+    .screening-actions { display: flex; gap: 8px; align-items: center; }
+    .screening-actions button { width: auto; }
+    .screening-axis-note { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
+    .screening-viz { min-height: 700px; overflow-x: auto; }
+    .screening-viz svg { height: 700px; max-width: 920px; margin: 0 auto; }
+    @media (max-width: 980px) { main { grid-template-columns: 1fr; } aside { border-right: 0; border-bottom: 1px solid var(--line); } .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); } .wide2 { grid-column: span 2; } }
+    @media (max-width: 560px) { .metrics, .toolbar, .split { grid-template-columns: 1fr; } .wide2 { grid-column: auto; } .protein-table-wrap { max-height: 230px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">Complexome Viewer</h1>
+    <div class="subhead" id="subtitle"></div>
+  </header>
+  <main>
+    <aside>
+      <div class="control"><label for="search">Search protein / gene ID</label><input id="search" type="search" autocomplete="off"></div>
+      <div class="split"><div class="control"><label for="minAbsLog2Fc">Min |log2 FC| <span id="minAbsLog2FcLabel">0.0</span></label><input id="minAbsLog2Fc" type="range" min="0" max="5" step="0.1" value="0"></div><div class="control"><label for="maxAdjustedP">Max raw p <span id="maxAdjustedPLabel">1.00</span></label><input id="maxAdjustedP" type="range" min="0" max="1" step="0.01" value="1"></div></div>
+      <div class="control">
+        <label>Profiles</label>
+        <div class="protein-table-wrap">
+          <table class="protein-table" id="proteinTable"><thead></thead><tbody></tbody></table>
+        </div>
+        <div class="selected-proteins" id="selectedProteins"></div>
+      </div>
+      <div class="control"><label for="profileDetail">Profile detail</label><select id="profileDetail"><option value="proteoform">Proteoform profiles</option><option value="peptide">Peptide profiles</option><option value="protein">Protein sum</option></select></div>
+      <div class="split">
+        <div class="control"><label for="scale">Scale</label><select id="scale"><option value="linear">Linear</option><option value="log10">Log10 + 1</option></select></div>
+        <div class="control"><label for="profileMode">Mode</label><select id="profileMode"><option value="raw">Raw</option><option value="relative">Relative</option></select></div>
+      </div>
+      <div class="control"><label for="smooth">Gaussian smoothing sigma <span id="smoothLabel">0</span></label><input id="smooth" type="range" min="0" max="4" step="0.25" value="0"></div>
+      <button id="clear">Clear selection</button>
+      <div class="status" id="status">Loading data...</div>
+    </aside>
+    <section>
+      <div class="tabs">
+        <button class="tabButton active" data-tab="summary">Summary</button>
+        <button class="tabButton" data-tab="screening">Screening</button>
+        <button class="tabButton" data-tab="profiles">Profiles</button>
+        <button class="tabButton" data-tab="peptides">Peptide Map</button>
+        <button class="tabButton" data-tab="network">Network</button>
+      </div>
+
+      <div class="tab active" id="tab-summary">
+        <div class="summary-panel">
+          <h2>Drug-response complexome screening</h2>
+          <p>This viewer summarizes a SEC-MS complexome profiling analysis aimed at discovering protein assembly perturbations after HSP90 inhibition. In this approach, native protein assemblies are separated by size-exclusion chromatography and quantified by mass spectrometry across fractions. Changes in elution shape, peak position, and apparent assembly size can reveal drug-associated remodeling of protein complexes even when total protein abundance changes are limited.</p>
+          <p>This is a prototypical presentation and does not represent scientific claims about the dataset. It is intended to showcase the establishment of a scientific question, extraction of relevant public data, processing into analysis-ready complexome profiles, and presentation in an explorable format for collaboration partners or clients.</p>
+          <h3>Example dataset</h3>
+          <p>The showcase uses public processed data from HT29 human colon adenocarcinoma cells treated with DMSO/control or the HSP90 inhibitor tanespimycin / 17-AAG. The source study is <em>Native Size-Exclusion Chromatography-Based Mass Spectrometry Reveals New Components of the Early Heat Shock Protein 90 Inhibition Response Among Limited Global Changes</em>.</p>
+          <p class="citation">ProteomeXchange / PRIDE: PXD033459. DOI: 10.1016/j.mcpro.2022.100485.</p>
+          <h3>Pipeline approach</h3>
+          <p>The workflow imports processed MaxQuant protein and peptide tables, maps SEC fractions and treatment labels, normalizes quantitative profiles, calls protein/proteoform-level profile features with the reference complexome pipeline, ranks proteins by an assembly perturbation score, and exports a static browser viewer for profile, peptide-map, and condition-network exploration.</p>
+          <p>The assembly perturbation score is an exploratory ranking metric combining center-of-mass shifts, peak-fraction shifts, and profile-shape distance between Control and HSP90i mean profiles. It is intended for screening and prioritization, not as a publication-grade statistical test.</p>
+          <h3>Viewer tabs</h3>
+          <p><strong>Screening</strong> shows ranked protein profiles in groups of five by assembly perturbation score, with Control and HSP90i mean profiles, SD shading, and dashed peak guides to highlight apparent assembly shifts.</p>
+          <p><strong>Profiles</strong> provides a detailed view for the selected protein, including proteoform-level facets when multiple proteoform calls are available and condition-level mean +/- SD traces.</p>
+          <p><strong>Peptide Map</strong> maps detected peptides onto the selected protein/proteoform context, including modification and UniProt reference PTM annotations where available.</p>
+          <p><strong>Network</strong> shows high-scoring pairs of profile features whose co-elution supports the idea of potential complex association. In the context of this assay, it is useful to explore which putative complexes or co-eluting feature pairs may be lost, gained, or changed between Control and HSP90i. This network view is completely exploratory and should be treated as a hypothesis-generation layer, not as evidence of direct physical interaction.</p>
+        </div>
+      </div>
+      <div class="tab" id="tab-screening">
+        <div class="screening-head">
+          <strong id="screeningTitle">Top assembly perturbation profiles</strong>
+          <div class="screening-actions">
+            <button id="screeningPrev" type="button">Previous 5</button>
+            <button id="screeningNext" type="button">Next 5</button>
+          </div>
+        </div>
+        <div class="screening-axis-note">SEC fractions are shown left to right from higher apparent molecular weight assemblies to lower apparent molecular weight assemblies.</div>
+        <div class="viz screening-viz"><svg id="screeningChart" role="img"></svg><div class="tooltip" id="screeningTooltip"></div><div class="legend" id="screeningLegend"></div></div>
+      </div>
+      <div class="tab" id="tab-profiles">
+        <div class="toolbar">
+          <div><label for="sampleFilter">Sample</label><select id="sampleFilter"></select></div>
+          <div><label for="plotMode">Plot</label><select id="plotMode"><option value="line">Line</option><option value="points">Line + Points</option></select></div>
+          <div><label for="maxProfiles">Max Profiles</label><input id="maxProfiles" type="number" min="1" max="24" value="8"></div>
+        </div>
+        <div class="viz"><svg id="profileChart" role="img"></svg><div class="tooltip" id="profileTooltip"></div><div class="legend" id="profileLegend"></div></div>
+      </div>
+      <div class="tab" id="tab-peptides">
+        <div class="toolbar">
+          <div class="wide2"><label for="peptideProtein">Protein</label><select id="peptideProtein"></select></div>
+          <div><label for="peptideProteoform">Proteoform</label><select id="peptideProteoform"></select></div>
+          <div><label for="peptideColor">Peptide color</label><select id="peptideColor"><option value="proteoform">Proteoform</option><option value="uniform">Uniform</option></select></div>
+        </div>
+        <div class="viz"><svg id="peptideChart" role="img"></svg><div class="tooltip" id="peptideTooltip"></div></div>
+        <div class="evidence-head"><strong>Peptide detail</strong><span id="peptideDetailStatus">Click a visualized peptide</span></div>
+        <table id="peptideTable" style="display:none"><thead></thead><tbody></tbody></table>
+      </div>
+      <div class="tab" id="tab-network">
+        <div class="toolbar">
+          <div class="wide2"><label for="networkSearch">Network Search</label><input id="networkSearch" type="search" autocomplete="off"></div><div><label for="networkCondition">Condition</label><select id="networkCondition"><option value="">All</option></select></div>
+          <div><label for="minScore">Min Score <span id="minScoreLabel">0.00</span></label><input id="minScore" type="range" min="0" max="1" step="0.01" value="0"></div>
+          <div><label for="networkMaxEdges">Top Edges</label><input id="networkMaxEdges" type="number" min="5" max="250" value="80"></div>
+        </div>
+        <div class="viz network-viz"><svg id="networkChart" role="img"></svg><div class="tooltip" id="networkTooltip"></div><div class="legend" id="networkLegend"></div></div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const colors = ["#2f7d5c", "#2d6f98", "#b98224", "#7756a4", "#b54b42", "#2f7f86", "#595f72", "#9b5f2f", "#4d7f3a", "#7d4f6a"];
+    const state = { manifest: {}, rows: [], meta: {}, headers: [], profileColumns: [], axis: [], idColumn: "", proteinIndex: [], filtered: [], selectedIds: [], selectionClickTimer: null, peptideMap: [], selectedPeptideMapRow: null, selectedPeptideMapKey: "", pointStats: new Map(), peptideEvidence: new Map(), peptideEvidenceLoaded: false, peptideEvidenceLoading: null, peptideEvidenceLoadedBuckets: new Set(), selectedEvidencePoint: null, networkEdges: [], networkNodes: [], nodeLookup: new Map(), networkNodePositions: new Map(), networkFocusedNode: "", activeTab: "summary", screeningOffset: 0 };
+    const $ = id => document.getElementById(id);
+    const escapeMap = {"&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"};
+
+    function parseTSV(text) {
+      const lines = String(text || "").replace(/\r/g, "").split("\n").filter(line => line.length > 0);
+      if (lines.length < 1) return { headers: [], rows: [] };
+      const headers = lines[0].split("\t");
+      const rows = lines.slice(1).map(line => {
+        const parts = line.split("\t");
+        const row = {};
+        headers.forEach((h, i) => { row[h] = parts[i] === undefined ? "" : parts[i]; });
+        return row;
+      });
+      return { headers, rows };
+    }
+    function numeric(value, fallback = 0) { const n = Number(value); return Number.isFinite(n) ? n : fallback; }
+    function escapeHTML(value) { return String(value == null ? "" : value).replace(/[&<>"']/g, ch => escapeMap[ch]); }
+    function unique(values) { return Array.from(new Set(values.filter(v => v != null && String(v).length > 0))); }
+    function featureType(row) { return String(row.feature_type || row.type || "").toLowerCase(); }
+    function stripProteoformSuffix(id) { return String(id || "").replace(/_[0-9]+$/, ""); }
+    function rowId(row) { return String(row[state.idColumn] || row.Viewer_ID || row.id || row.protein_id || row.proteoform_id || row.peptide_id || row.Accession || ""); }
+    function rowKeys(row) { return unique([rowId(row), row.Viewer_ID, row.id, row.Accession, row.Uniprot_ID, row.protein_id, row.proteoform_id, row.peptide_id, rowProtein(row)]); }
+    function rowGene(row) { return String(row.Gene || row.gene_name || row.gene || ""); }
+    function monomerMw(row) { return numeric(row["Pred. Protein MW [kDa]"] || row.monomer_mw_kda || row.monomer_mw || row.predicted_mw_kda, NaN); }
+    function rowProtein(row) {
+      const ft = featureType(row);
+      if (row.protein_id) return String(row.protein_id);
+      if (ft === "peptide") {
+        if (row.Uniprot_ID) return String(row.Uniprot_ID);
+        if (row.Accession) return stripProteoformSuffix(row.Accession);
+      }
+      if (row.Accession) return ft === "proteoform" ? String(row.Accession) : stripProteoformSuffix(row.Accession);
+      if (row.Uniprot_ID) return String(row.Uniprot_ID);
+      const id = rowId(row);
+      return ft === "proteoform" ? stripProteoformSuffix(id) : id;
+    }
+    function rowLabel(row) {
+      const gene = rowGene(row);
+      const acc = row.Accession || row.protein_id || row.proteoform_id || rowId(row);
+      const name = row["Protein name"] || row.protein_name || "";
+      return [rowId(row), gene || acc, name].filter(Boolean).join(" | ");
+    }
+    function formatMw(value) {
+      if (!Number.isFinite(value)) return "";
+      return value >= 100 ? value.toFixed(0) : value.toFixed(1);
+    }
+    function proteinSearchText(item) { return [item.protein_id, item.gene_id].filter(Boolean).join(" ").toLowerCase(); }
+    function selectedDetail() { return $("profileDetail") ? $("profileDetail").value : "proteoform"; }
+    function rowsForProtein(protein, detail) {
+      const rows = state.rows.filter(row => rowProtein(row) === protein && featureType(row) === detail);
+      if (detail === "proteoform" && rows.length < 1) {
+        return state.rows.filter(row => rowProtein(row) === protein && featureType(row) === "protein");
+      }
+      return rows;
+    }
+    function selectedRows(limit = null) {
+      if (state.selectedIds.length < 1) return [];
+      const detail = selectedDetail();
+      let rows = state.selectedIds.flatMap(protein => rowsForProtein(protein, detail));
+      rows.sort((a, b) => rowId(a).localeCompare(rowId(b), undefined, { numeric: true, sensitivity: "base" }));
+      if (limit == null && detail === "proteoform" && state.selectedIds.length === 1) return rows;
+      const maxProfiles = limit == null ? numeric($("maxProfiles").value, 8) : limit;
+      return rows.slice(0, Math.max(1, maxProfiles));
+    }
+    function validProteoformId(value) {
+      const id = String(value || "").trim();
+      return id && !["NA", "null", "undefined", "unassigned"].includes(id) ? id : "";
+    }
+    function proteinProteoformColorMap(protein) {
+      const proteinId = String(protein || "");
+      const ids = [];
+      state.rows
+        .filter(row => rowProtein(row) === proteinId && featureType(row) === "proteoform")
+        .sort((a, b) => rowId(a).localeCompare(rowId(b), undefined, { numeric: true, sensitivity: "base" }))
+        .forEach(row => {
+          const id = validProteoformId(row.proteoform_id || row.Accession || rowId(row));
+          if (id && !ids.includes(id)) ids.push(id);
+        });
+      state.peptideMap
+        .filter(row => String(row.protein_id || "") === proteinId)
+        .forEach(row => {
+          const id = validProteoformId(row.proteoform_id);
+          if (id && !ids.includes(id)) ids.push(id);
+        });
+      return new Map(ids.map((id, idx) => [id, colors[idx % colors.length]]));
+    }
+    function peptideProfileProteoformIds(row) {
+      const protein = rowProtein(row);
+      const keys = new Set(rowKeys(row).map(value => String(value || "")));
+      [
+        row.peptide_id,
+        row.peptide_sequence,
+        row.Sequence,
+        row.modified_sequence,
+        row["Modified.Sequence"],
+        rowId(row)
+      ].forEach(value => {
+        if (value != null && String(value).length > 0) keys.add(String(value));
+      });
+      return unique(state.peptideMap
+        .filter(peptide => String(peptide.protein_id || "") === protein)
+        .filter(peptide => keys.has(String(peptide.peptide_id || "")) || keys.has(String(peptide.peptide_sequence || "")) || keys.has(String(peptide.modified_sequence || "")))
+        .map(peptide => validProteoformId(peptide.proteoform_id))
+        .filter(Boolean));
+    }
+    function profileTraceColor(row, idx) {
+      if (selectedDetail() !== "peptide") return colors[idx % colors.length];
+      const colorMap = proteinProteoformColorMap(rowProtein(row));
+      if (colorMap.size > 1) {
+        const proteoformIds = peptideProfileProteoformIds(row);
+        for (const id of proteoformIds) {
+          if (colorMap.has(id)) return colorMap.get(id);
+        }
+      }
+      return colors[0];
+    }
+    function profileLegendEntries(rows, series) {
+      if (selectedDetail() !== "peptide") {
+        return rows.map((row, idx) => ({ color: colors[idx % colors.length], label: rowLabel(row) }));
+      }
+      const proteins = unique(rows.map(rowProtein));
+      const entries = [];
+      proteins.forEach(protein => {
+        const colorMap = proteinProteoformColorMap(protein);
+        if (colorMap.size > 1) {
+          const visibleIds = new Set();
+          rows.filter(row => rowProtein(row) === protein).forEach(row => peptideProfileProteoformIds(row).forEach(id => visibleIds.add(id)));
+          colorMap.forEach((color, id) => {
+            if (!visibleIds.has(id)) return;
+            const labelRows = state.peptideMap.filter(row => String(row.protein_id || "") === protein && validProteoformId(row.proteoform_id) === id);
+            const label = proteoformLabelForId(id, labelRows);
+            entries.push({ color, label: proteins.length > 1 ? `${proteinChipLabel(protein)} | ${label}` : label });
+          });
+        } else {
+          entries.push({ color: colors[0], label: proteins.length > 1 ? `${proteinChipLabel(protein)} | peptides` : "Peptides" });
+        }
+      });
+      return entries.length > 0 ? entries : rows.map(row => ({ color: colors[0], label: rowLabel(row) }));
+    }
+    function selectedKeySet() {
+      const keys = new Set();
+      state.selectedIds.forEach(k => keys.add(k));
+      selectedRows(24).forEach(row => rowKeys(row).forEach(k => keys.add(k)));
+      return keys;
+    }
+    function buildProteinIndex() {
+      const byProtein = new Map();
+      function finiteMetric(row, column) {
+        const value = Number(row[column]);
+        return Number.isFinite(value) ? value : NaN;
+      }
+      function ensure(protein) {
+        const id = String(protein || "").trim();
+        if (!id) return null;
+        if (!byProtein.has(id)) {
+          byProtein.set(id, {
+            protein_id: id,
+            gene_id: "",
+            monomer_mw_kda: NaN,
+            proteoforms: new Set(),
+            proteinRows: new Set(),
+            peptides: new Set(),
+            log2fc_values: [],
+            adjusted_p_values: [],
+            abundance_p_values: [],
+            perturbation_scores: [],
+            profile_distances: []
+          });
+        }
+        return byProtein.get(id);
+      }
+      function addMetrics(item, row) {
+        const log2fc = finiteMetric(row, "log2_total_abundance_fc");
+        const adjp = finiteMetric(row, "adjusted_p_value");
+        const pval = finiteMetric(row, "abundance_p_value");
+        const score = finiteMetric(row, "assembly_perturbation_score");
+        const distance = finiteMetric(row, "profile_distance");
+        if (Number.isFinite(log2fc)) item.log2fc_values.push(log2fc);
+        if (Number.isFinite(adjp)) item.adjusted_p_values.push(adjp);
+        if (Number.isFinite(pval)) item.abundance_p_values.push(pval);
+        if (Number.isFinite(score)) item.perturbation_scores.push(score);
+        if (Number.isFinite(distance)) item.profile_distances.push(distance);
+      }
+      function maxAbs(values) {
+        const finite = values.filter(Number.isFinite);
+        if (finite.length < 1) return NaN;
+        return finite.reduce((best, value) => Math.abs(value) > Math.abs(best) ? value : best, finite[0]);
+      }
+      function minFinite(values) {
+        const finite = values.filter(Number.isFinite);
+        return finite.length ? Math.min(...finite) : NaN;
+      }
+      function maxFinite(values) {
+        const finite = values.filter(Number.isFinite);
+        return finite.length ? Math.max(...finite) : NaN;
+      }
+      state.rows.forEach(row => {
+        const item = ensure(rowProtein(row));
+        if (!item) return;
+        if (!item.gene_id && rowGene(row)) item.gene_id = rowGene(row);
+        const mw = monomerMw(row);
+        if (!Number.isFinite(item.monomer_mw_kda) && Number.isFinite(mw) && mw > 0) item.monomer_mw_kda = mw;
+        const ft = featureType(row);
+        if (ft === "proteoform") item.proteoforms.add(rowId(row));
+        if (ft === "protein") item.proteinRows.add(rowId(row));
+        if (ft === "peptide") item.peptides.add(rowId(row));
+        addMetrics(item, row);
+      });
+      state.peptideMap.forEach(row => {
+        const item = ensure(row.protein_id);
+        if (!item) return;
+        if (!item.gene_id && row.gene_name) item.gene_id = String(row.gene_name);
+        if (row.peptide_id) item.peptides.add(String(row.peptide_id));
+      });
+      state.proteinIndex = Array.from(byProtein.values()).map(item => {
+        const log2fc = maxAbs(item.log2fc_values);
+        const adjp = minFinite(item.adjusted_p_values);
+        return {
+          protein_id: item.protein_id,
+          gene_id: item.gene_id,
+          n_proteoforms: item.proteoforms.size > 0 ? item.proteoforms.size : (item.proteinRows.size > 0 ? 1 : 0),
+          n_peptides: item.peptides.size,
+          monomer_mw_kda: Number.isFinite(item.monomer_mw_kda) ? item.monomer_mw_kda : null,
+          log2_total_abundance_fc: Number.isFinite(log2fc) ? log2fc : null,
+          abs_log2_total_abundance_fc: Number.isFinite(log2fc) ? Math.abs(log2fc) : 0,
+          adjusted_p_value: Number.isFinite(adjp) ? adjp : null,
+          abundance_p_value: Number.isFinite(minFinite(item.abundance_p_values)) ? minFinite(item.abundance_p_values) : null,
+          assembly_perturbation_score: Number.isFinite(maxFinite(item.perturbation_scores)) ? maxFinite(item.perturbation_scores) : 0,
+          profile_distance: Number.isFinite(maxFinite(item.profile_distances)) ? maxFinite(item.profile_distances) : null
+        };
+      }).sort((a, b) => {
+        const scoreDelta = (b.assembly_perturbation_score || 0) - (a.assembly_perturbation_score || 0);
+        if (Math.abs(scoreDelta) > 1e-9) return scoreDelta;
+        const fcDelta = (b.abs_log2_total_abundance_fc || 0) - (a.abs_log2_total_abundance_fc || 0);
+        if (Math.abs(fcDelta) > 1e-9) return fcDelta;
+        return a.protein_id.localeCompare(b.protein_id);
+      });
+    }
+    function makeSvg(name, attrs = {}) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", name);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+      return el;
+    }
+    async function fetchJSON(file, fallback = {}) {
+      try {
+        const r = await fetch(file);
+        if (!r.ok) return fallback;
+        return await r.json();
+      } catch (error) {
+        return fallback;
+      }
+    }
+    async function fetchTextOptional(file) {
+      if (!file) return "";
+      try {
+        const r = await fetch(file);
+        if (!r.ok) return "";
+        return await r.text();
+      } catch (error) {
+        return "";
+      }
+    }
+    function fileName(key, fallback) {
+      const files = state.manifest.files || {};
+      return files[key] || fallback;
+    }
+    function pointStatsKey(profileId, profileCol) { return `${profileId}\u001f${profileCol}`; }
+    function buildPointStats(rows) {
+      state.pointStats = new Map();
+      rows.forEach(row => {
+        const profileId = String(row.profile_id || "");
+        const profileCol = String(row.profile_col || "");
+        if (profileId && profileCol) state.pointStats.set(pointStatsKey(profileId, profileCol), row);
+      });
+    }
+    function pointStatsFor(row, profileCol) {
+      const keys = rowKeys(row);
+      for (const key of keys) {
+        const hit = state.pointStats.get(pointStatsKey(key, profileCol));
+        if (hit) return hit;
+      }
+      return null;
+    }
+    function profileIndexForColumn(col) {
+      const idx = state.profileColumns.indexOf(col);
+      return idx < 0 ? 0 : idx + 1;
+    }
+    function profileEvidenceKey(profileId, profileIndex) { return `${profileId}\u001f${profileIndex}`; }
+    function buildPeptideEvidence(rows, reset = true) {
+      if (reset) state.peptideEvidence = new Map();
+      rows.forEach(row => {
+        const profileId = String(row.profile_id || "");
+        const profileIndex = String(row.profile_index || "");
+        if (!profileId || !profileIndex) return;
+        const key = profileEvidenceKey(profileId, profileIndex);
+        if (!state.peptideEvidence.has(key)) state.peptideEvidence.set(key, []);
+        state.peptideEvidence.get(key).push(row);
+      });
+      state.peptideEvidence.forEach(rowsForPoint => {
+        rowsForPoint.sort((a, b) => String(a.modified_sequence || a.peptide_sequence || a.peptide_id || "").localeCompare(String(b.modified_sequence || b.peptide_sequence || b.peptide_id || ""), undefined, { sensitivity: "base" }));
+      });
+    }
+    function peptideEvidenceShardFiles() {
+      const files = state.manifest.files || {};
+      return files.profile_peptide_evidence_shards || null;
+    }
+    function peptideEvidenceShardCount() {
+      const files = state.manifest.files || {};
+      const shards = peptideEvidenceShardFiles();
+      const explicit = numeric(files.profile_peptide_evidence_shard_count, NaN);
+      if (Number.isFinite(explicit) && explicit > 0) return Math.round(explicit);
+      return shards ? Math.max(Object.keys(shards).length, 1) : 0;
+    }
+    function peptideEvidenceBucketForKey(key) {
+      const count = peptideEvidenceShardCount();
+      if (count < 1) return 0;
+      let sum = 0;
+      String(key || "").split("").forEach(ch => { sum += ch.charCodeAt(0); });
+      return sum % count;
+    }
+    function peptideEvidenceBucketsForPoint(point) {
+      if (!point) return [];
+      return unique((point.profileKeys || []).map(key => String(peptideEvidenceBucketForKey(key))));
+    }
+    function peptideEvidenceShardFile(bucket) {
+      const shards = peptideEvidenceShardFiles();
+      if (!shards) return "";
+      return shards[String(bucket)] || shards[Number(bucket)] || "";
+    }
+    function peptideEvidenceReady(point) {
+      const shards = peptideEvidenceShardFiles();
+      if (!shards) return state.peptideEvidenceLoaded;
+      return peptideEvidenceBucketsForPoint(point).every(bucket => state.peptideEvidenceLoadedBuckets.has(String(bucket)));
+    }
+    function ensurePeptideEvidenceLoaded() {
+      if (state.peptideEvidenceLoaded) return Promise.resolve();
+      if (state.peptideEvidenceLoading) return state.peptideEvidenceLoading;
+      const evidenceFile = fileName("profile_peptide_evidence", "profile_peptide_evidence.tsv");
+      $("profileEvidenceStatus").textContent = "Loading peptide evidence";
+      state.peptideEvidenceLoading = fetchTextOptional(evidenceFile).then(text => {
+        buildPeptideEvidence(parseTSV(text).rows);
+        state.peptideEvidenceLoaded = true;
+        state.peptideEvidenceLoading = null;
+      }).catch(() => {
+        state.peptideEvidenceLoaded = true;
+        state.peptideEvidenceLoading = null;
+      });
+      return state.peptideEvidenceLoading;
+    }
+    function ensurePeptideEvidenceForPoint(point) {
+      const shards = peptideEvidenceShardFiles();
+      if (!shards) return ensurePeptideEvidenceLoaded();
+      const missingBuckets = peptideEvidenceBucketsForPoint(point).filter(bucket => !state.peptideEvidenceLoadedBuckets.has(String(bucket)));
+      if (missingBuckets.length < 1) return Promise.resolve();
+      $("profileEvidenceStatus").textContent = `Loading peptide evidence (${missingBuckets.length} shard${missingBuckets.length === 1 ? "" : "s"})`;
+      return Promise.all(missingBuckets.map(bucket => {
+        const file = peptideEvidenceShardFile(bucket);
+        if (!file) {
+          state.peptideEvidenceLoadedBuckets.add(String(bucket));
+          return Promise.resolve();
+        }
+        return fetchTextOptional(file).then(text => {
+          buildPeptideEvidence(parseTSV(text).rows, false);
+          state.peptideEvidenceLoadedBuckets.add(String(bucket));
+        }).catch(() => {
+          state.peptideEvidenceLoadedBuckets.add(String(bucket));
+        });
+      }));
+    }
+    function evidenceRowsForPoint(point) {
+      if (!point) return [];
+      for (const key of point.profileKeys || []) {
+        const rows = state.peptideEvidence.get(profileEvidenceKey(key, point.profileIndex));
+        if (rows && rows.length > 0) return rows;
+      }
+      return [];
+    }
+    function resetProfileEvidence() {
+      state.selectedEvidencePoint = null;
+      drawProfileEvidence();
+    }
+    function selectProfilePoint(point) {
+      state.selectedEvidencePoint = point;
+    }
+    function formatTooltipNumber(value, digits = 4) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "n/a";
+      const abs = Math.abs(n);
+      if ((abs > 0 && abs < 0.001) || abs >= 1000000) return n.toExponential(3);
+      return n.toLocaleString(undefined, { maximumSignificantDigits: digits });
+    }
+    function showProfileTooltip(event, point) {
+      const tooltip = $("profileTooltip");
+      const wrap = tooltip.parentElement;
+      const rect = wrap && wrap.getBoundingClientRect ? wrap.getBoundingClientRect() : { left: 0, top: 0, width: 1040, height: 500 };
+      const left = Math.min(Math.max(8, (event.clientX || rect.left) - rect.left + 12), Math.max(8, rect.width - 320));
+      const top = Math.min(Math.max(8, (event.clientY || rect.top) - rect.top + 12), Math.max(8, rect.height - 170));
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+      const sd = Number.isFinite(point.sdIntensity) ? formatTooltipNumber(point.sdIntensity, 4) : "n/a";
+      const n = Number.isFinite(point.nReplicates) ? Math.round(point.nReplicates).toLocaleString() : "n/a";
+      tooltip.innerHTML = [
+        `<strong>${escapeHTML(point.label)}</strong>`,
+        `<span>Condition: ${escapeHTML(point.condition || "n/a")}</span>`,
+        `<span>Fraction: ${escapeHTML(point.axis.fraction || point.index + 1)}</span>`,
+        `<span>Mean intensity: ${escapeHTML(formatTooltipNumber(point.meanIntensity))}</span>`,
+        `<span>SD: ${escapeHTML(sd)}</span>`,
+        `<span>Samples: ${escapeHTML(n)}</span>`
+      ].join("");
+      tooltip.style.display = "block";
+    }
+    function hideProfileTooltip() {
+      $("profileTooltip").style.display = "none";
+    }
+    function initAxis() {
+      const mw = Array.isArray(state.meta.MW) ? state.meta.MW : [];
+      state.axis = state.profileColumns.map((name, i) => {
+        const parts = name.split("|");
+        return { name, sample: parts.slice(0, -1).join("|") || name.replace(/\|.*$/, ""), fraction: Number(parts[parts.length - 1]), mw: mw[i] === undefined ? null : Number(mw[i]) };
+      });
+      const samples = unique(state.axis.map(a => a.sample));
+      $("sampleFilter").innerHTML = `<option value="">All</option>` + samples.map(s => `<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join("");
+    }
+    function setMetrics() {
+      $("nRows").textContent = state.rows.length.toLocaleString();
+      $("nProfiles").textContent = state.profileColumns.length.toLocaleString();
+      $("nSamples").textContent = new Set(state.axis.map(a => a.sample)).size.toLocaleString();
+      $("nPeptides").textContent = state.peptideMap.length.toLocaleString();
+      $("nEdges").textContent = state.networkEdges.length.toLocaleString();
+    }
+    function refreshOptions() {
+      const query = $("search").value.trim().toLowerCase();
+      const minEffect = numeric($("minAbsLog2Fc") ? $("minAbsLog2Fc").value : 0, 0);
+      const maxRawP = numeric($("maxAdjustedP") ? $("maxAdjustedP").value : 1, 1);
+      if ($("minAbsLog2FcLabel")) $("minAbsLog2FcLabel").textContent = minEffect.toFixed(1);
+      if ($("maxAdjustedPLabel")) $("maxAdjustedPLabel").textContent = maxRawP.toFixed(2);
+      state.filtered = state.proteinIndex.filter(item => {
+        if (query && !proteinSearchText(item).includes(query)) return false;
+        if ((item.abs_log2_total_abundance_fc || 0) < minEffect) return false;
+        const pvalue = Number(item.abundance_p_value);
+        if (maxRawP < 1 && (!Number.isFinite(pvalue) || pvalue > maxRawP)) return false;
+        return true;
+      });
+      const selected = new Set(state.selectedIds);
+      const table = $("proteinTable");
+      table.querySelector("thead").innerHTML = "<tr><th>Protein ID</th><th>Gene ID</th><th>Proteoforms</th><th>log2 FC</th><th>raw p</th><th>Assembly perturbation score</th></tr>";
+      table.querySelector("tbody").innerHTML = state.filtered.slice(0, 1000).map(item => {
+        const id = item.protein_id;
+        const cls = selected.has(id) ? " class=\"selected\"" : "";
+        const log2fc = Number.isFinite(Number(item.log2_total_abundance_fc)) ? Number(item.log2_total_abundance_fc).toFixed(2) : "NA";
+        const pvalue = Number.isFinite(Number(item.abundance_p_value)) ? Number(item.abundance_p_value).toPrecision(3) : "NA";
+        const score = Number.isFinite(Number(item.assembly_perturbation_score)) ? Number(item.assembly_perturbation_score).toFixed(2) : "NA";
+        return `<tr data-protein-id="${escapeHTML(id)}"${cls}><td>${escapeHTML(id)}</td><td>${escapeHTML(item.gene_id)}</td><td>${item.n_proteoforms.toLocaleString()}</td><td>${escapeHTML(log2fc)}</td><td>${escapeHTML(pvalue)}</td><td>${escapeHTML(score)}</td></tr>`;
+      }).join("");
+      if (state.filtered.length < 1) {
+        table.querySelector("tbody").innerHTML = "<tr><td colspan=\"6\">No matching proteins</td></tr>";
+      }
+      renderSelectedProteins();
+      $("status").textContent = `${state.filtered.length.toLocaleString()} matching proteins`;
+    }
+    function proteinIdFromTableEvent(event) {
+      const row = event.target.closest("tr[data-protein-id]");
+      return row ? row.getAttribute("data-protein-id") : "";
+    }
+    function proteinChipLabel(id) {
+      const item = state.proteinIndex.find(row => row.protein_id === id);
+      if (!item) return id;
+      return [item.gene_id, item.protein_id].filter(Boolean).join(" | ");
+    }
+    function renderSelectedProteins() {
+      const wrap = $("selectedProteins");
+      if (!wrap) return;
+      wrap.innerHTML = state.selectedIds.map(id => {
+        const label = proteinChipLabel(id);
+        return `<div class="selected-chip" data-protein-id="${escapeHTML(id)}" title="${escapeHTML(label)}"><span>${escapeHTML(label)}</span><button type="button" data-remove-protein-id="${escapeHTML(id)}" aria-label="Remove ${escapeHTML(id)}">x</button></div>`;
+      }).join("");
+    }
+    function applyProteinSelection(id, mode = "single") {
+      if (!id) return;
+      if (mode === "toggle") {
+        state.selectedIds = state.selectedIds.includes(id) ? state.selectedIds.filter(v => v !== id) : state.selectedIds.concat(id);
+      } else if (mode === "add") {
+        if (!state.selectedIds.includes(id)) state.selectedIds = state.selectedIds.concat(id);
+      } else {
+        state.selectedIds = [id];
+      }
+      state.selectedEvidencePoint = null;
+      refreshOptions();
+      syncPeptideProteinWithSelection();
+      drawAll();
+    }
+    function selectProteinRow(event) {
+      if (event.detail > 1) return;
+      const id = proteinIdFromTableEvent(event);
+      if (!id) return;
+      if (state.selectionClickTimer) clearTimeout(state.selectionClickTimer);
+      const mode = (event.ctrlKey || event.metaKey) ? "toggle" : "single";
+      state.selectionClickTimer = setTimeout(() => {
+        state.selectionClickTimer = null;
+        applyProteinSelection(id, mode);
+      }, 260);
+    }
+    function addProteinRow(event) {
+      const id = proteinIdFromTableEvent(event);
+      if (!id) return;
+      if (state.selectionClickTimer) {
+        clearTimeout(state.selectionClickTimer);
+        state.selectionClickTimer = null;
+      }
+      applyProteinSelection(id, "add");
+    }
+    function removeSelectedProtein(event) {
+      const button = event.target.closest("[data-remove-protein-id]");
+      if (!button) return;
+      const id = button.getAttribute("data-remove-protein-id");
+      state.selectedIds = state.selectedIds.filter(value => value !== id);
+      state.selectedEvidencePoint = null;
+      refreshOptions();
+      syncPeptideProteinWithSelection();
+      drawAll();
+    }
+    function axisForColumn(col) { return state.axis.find(a => a.name === col) || { name: col, fraction: null, mw: null }; }
+    function mirrorColumnsByMw(cols) {
+      const axes = cols.map(axisForColumn).filter(a => Number.isFinite(a.mw));
+      if (axes.length > 1 && axes[0].mw < axes[axes.length - 1].mw) return cols.slice().reverse();
+      return cols;
+    }
+    function mirroredSourceColumnsForDisplay(cols) {
+      const sourceCols = cols.slice();
+      const groups = new Map();
+      cols.forEach((col, idx) => {
+        const sample = axisForColumn(col).sample || "";
+        if (!groups.has(sample)) groups.set(sample, []);
+        groups.get(sample).push(idx);
+      });
+      groups.forEach(indices => {
+        const reversed = indices.map(idx => cols[idx]).reverse();
+        indices.forEach((idx, localIdx) => { sourceCols[idx] = reversed[localIdx]; });
+      });
+      return sourceCols;
+    }
+    function profileColumnsForView() {
+      const sample = $("sampleFilter").value;
+      const cols = sample ? state.axis.filter(a => a.sample === sample).map(a => a.name) : state.profileColumns;
+      return mirrorColumnsByMw(cols);
+    }
+    function plotScaleValue(value) {
+      const v = Number(value);
+      if (!Number.isFinite(v)) return NaN;
+      return $("scale").value === "log10" ? Math.log10(Math.max(v, 0) + 1) : v;
+    }
+    function indicesBySample(cols) {
+      const groups = new Map();
+      cols.forEach((col, idx) => {
+        const sample = axisForColumn(col).sample || "";
+        if (!groups.has(sample)) groups.set(sample, []);
+        groups.get(sample).push(idx);
+      });
+      return Array.from(groups.values());
+    }
+    function gaussianSmoothValues(values, sigma) {
+      const y = values.map(value => Number(value));
+      const s = Math.min(Math.max(Number(sigma), 0), 4);
+      if (!Number.isFinite(s) || s <= 0 || y.length < 3) return y;
+      const radius = Math.max(1, Math.ceil(3 * s));
+      const offsets = [];
+      const weights = [];
+      for (let offset = -radius; offset <= radius; offset++) {
+        offsets.push(offset);
+        weights.push(Math.exp(-(offset * offset) / (2 * s * s)));
+      }
+      return y.map((value, i) => {
+        let weightedSum = 0;
+        let weightSum = 0;
+        offsets.forEach((offset, j) => {
+          const idx = i + offset;
+          if (idx < 0 || idx >= y.length || !Number.isFinite(y[idx])) return;
+          weightedSum += y[idx] * weights[j];
+          weightSum += weights[j];
+        });
+        return weightSum > 0 ? weightedSum / weightSum : value;
+      });
+    }
+    function transformSeries(row, cols) {
+      let values = cols.map(col => numeric(row[col], NaN));
+      const sampleGroups = indicesBySample(cols);
+      if ($("profileMode").value === "relative") {
+        sampleGroups.forEach(indices => {
+          const maxValue = Math.max(...indices.map(i => values[i]).filter(Number.isFinite), 0);
+          if (maxValue > 0) indices.forEach(i => { values[i] = values[i] / maxValue; });
+        });
+      }
+      const sigma = numeric($("smooth").value, 0);
+      if (sigma > 0) {
+        sampleGroups.forEach(indices => {
+          const smoothed = gaussianSmoothValues(indices.map(i => values[i]), sigma);
+          indices.forEach((idx, localIdx) => { values[idx] = smoothed[localIdx]; });
+        });
+      }
+      return values.map(v => {
+        const scaled = plotScaleValue(v);
+        return Number.isFinite(scaled) ? scaled : 0;
+      });
+    }
+    function drawProfile() {
+      const svg = $("profileChart");
+      hideProfileTooltip();
+      const rows = selectedRows();
+      const selectedCols = profileColumnsForView();
+      const activeColumnSet = new Set(selectedCols);
+      const axes = state.axis.filter(axis => activeColumnSet.has(axis.name) && Number.isFinite(axis.fraction));
+      const fractions = Array.from(new Set(axes.map(axis => axis.fraction))).sort((a, b) => a - b);
+      const width = 1040;
+      const facetCols = rows.length <= 1 ? 1 : 2;
+      const facetRows = Math.max(1, Math.ceil(rows.length / facetCols));
+      const facetHeight = rows.length <= 2 ? 420 : 310;
+      const height = Math.max(500, 72 + facetRows * facetHeight);
+      const gapX = 42;
+      const gapY = 58;
+      const outerLeft = 62;
+      const outerRight = 24;
+      const outerTop = 58;
+      const outerBottom = 52;
+      const facetWidth = (width - outerLeft - outerRight - gapX * (facetCols - 1)) / facetCols;
+      const plotTopPad = 38;
+      const plotBottomPad = 56;
+      const plotLeftPad = 48;
+      const plotRightPad = 18;
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.style.height = `${height}px`;
+      svg.innerHTML = "";
+      if (fractions.length < 1 || rows.length < 1) {
+        const label = makeSvg("text", { x: 24, y: 40, class: "empty" });
+        label.textContent = `No ${selectedDetail()} profiles for the selected protein`;
+        svg.appendChild(label);
+        $("profileLegend").innerHTML = "";
+        return;
+      }
+      function conditionForSample(sample) {
+        const text = String(sample || "").toLowerCase();
+        if (text.includes("control") || text.includes("dmso") || text.includes("vehicle")) return "Control";
+        if (text.includes("hsp90") || text.includes("17aag") || text.includes("17-aag") || text.includes("treated") || text.includes("tanespimycin")) return "HSP90i";
+        return String(sample || "Unknown");
+      }
+      function conditionColor(condition) {
+        return condition === "Control" ? "#2d6f98" : (condition === "HSP90i" ? "#b54b42" : "#7756a4");
+      }
+      function conditionOrder(conditions) {
+        const preferred = ["Control", "HSP90i"];
+        return preferred.filter(c => conditions.includes(c)).concat(conditions.filter(c => !preferred.includes(c)).sort());
+      }
+      function profileIntensityValue(value) {
+        const text = String(value == null ? "" : value).trim();
+        if (!text || ["NA", "NaN", "null", "undefined"].includes(text)) return NaN;
+        const parsed = Number(text);
+        return Number.isFinite(parsed) ? parsed : NaN;
+      }
+      function mean(values) {
+        const finite = values.filter(Number.isFinite);
+        return finite.length ? finite.reduce((a, b) => a + b, 0) / finite.length : NaN;
+      }
+      function sd(values) {
+        const finite = values.filter(Number.isFinite);
+        if (finite.length < 2) return 0;
+        const m = mean(finite);
+        return Math.sqrt(finite.reduce((sum, value) => sum + Math.pow(value - m, 2), 0) / (finite.length - 1));
+      }
+      function sampleValues(row, sample) {
+        const values = fractions.map(fraction => {
+          const axis = axes.find(item => item.sample === sample && item.fraction === fraction);
+          return axis ? profileIntensityValue(row[axis.name]) : NaN;
+        });
+        if ($("profileMode").value === "relative") {
+          const maxValue = Math.max(...values.filter(Number.isFinite), 0);
+          if (maxValue > 0) {
+            for (let i = 0; i < values.length; i += 1) {
+              if (Number.isFinite(values[i])) values[i] = values[i] / maxValue;
+            }
+          }
+        }
+        const sigma = numeric($("smooth").value, 0);
+        return sigma > 0 ? gaussianSmoothValues(values, sigma) : values;
+      }
+      function aggregateRow(row) {
+        const sampleGroups = new Map();
+        axes.forEach(axis => {
+          const condition = conditionForSample(axis.sample);
+          if (!sampleGroups.has(condition)) sampleGroups.set(condition, new Set());
+          sampleGroups.get(condition).add(axis.sample);
+        });
+        const out = [];
+        conditionOrder(Array.from(sampleGroups.keys())).forEach(condition => {
+          const samples = Array.from(sampleGroups.get(condition));
+          const perSample = samples.map(sample => sampleValues(row, sample));
+          const points = fractions.map((fraction, idx) => {
+            const values = perSample.map(series => series[idx]).filter(Number.isFinite);
+            const m = mean(values);
+            const s = sd(values);
+            const axis = axes.find(item => conditionForSample(item.sample) === condition && item.fraction === fraction);
+            return {
+              condition,
+              fraction,
+              mean: m,
+              sd: s,
+              n: values.length,
+              low: Number.isFinite(m) ? Math.max(0, m - s) : NaN,
+              high: Number.isFinite(m) ? m + s : NaN,
+              representativeColumn: axis ? axis.name : ""
+            };
+          });
+          out.push({ condition, color: conditionColor(condition), points });
+        });
+        return out;
+      }
+      const rowAggregates = rows.map(row => ({ row, series: aggregateRow(row) }));
+      const allHigh = rowAggregates.flatMap(item => item.series.flatMap(series => series.points.map(point => plotScaleValue(point.high)))).filter(Number.isFinite);
+      const allMean = rowAggregates.flatMap(item => item.series.flatMap(series => series.points.map(point => plotScaleValue(point.mean)))).filter(Number.isFinite);
+      const ymax = Math.max(...allHigh, ...allMean, 1);
+      const ymin = 0;
+      const tickFractions = fractions.filter((fraction, idx) => idx === 0 || idx === fractions.length - 1 || fraction % 5 === 0);
+      function scaledY(value, plotTop, plotHeight) {
+        const scaled = plotScaleValue(value);
+        const safe = Number.isFinite(scaled) ? scaled : ymin;
+        return plotTop + (1 - ((safe - ymin) / Math.max(ymax - ymin, 1e-9))) * plotHeight;
+      }
+      rowAggregates.forEach((facet, idx) => {
+        const col = idx % facetCols;
+        const rowIdx = Math.floor(idx / facetCols);
+        const facetX = outerLeft + col * (facetWidth + gapX);
+        const facetY = outerTop + rowIdx * facetHeight;
+        const plotLeft = facetX + plotLeftPad;
+        const plotTop = facetY + plotTopPad;
+        const plotWidth = facetWidth - plotLeftPad - plotRightPad;
+        const plotHeight = facetHeight - plotTopPad - plotBottomPad;
+        const x = fraction => plotLeft + ((fraction - fractions[0]) / Math.max(fractions[fractions.length - 1] - fractions[0], 1)) * plotWidth;
+        const title = makeSvg("text", { x: facetX, y: facetY + 16, fill: "#22252a", "font-size": 13, "font-weight": 700 });
+        title.textContent = rowLabel(facet.row);
+        svg.appendChild(title);
+        const metrics = [
+          Number(facet.row.log2_total_abundance_fc),
+          Number(facet.row.adjusted_p_value),
+          Number(facet.row.assembly_perturbation_score)
+        ];
+        const subtitle = makeSvg("text", { x: facetX, y: facetY + 32, fill: "#666b74", "font-size": 11 });
+        subtitle.textContent = [
+          Number.isFinite(metrics[0]) ? `log2 FC ${metrics[0].toFixed(2)}` : "",
+          Number.isFinite(metrics[1]) ? `adj. p ${metrics[1].toPrecision(3)}` : "",
+          Number.isFinite(metrics[2]) ? `assembly perturbation score ${metrics[2].toFixed(2)}` : ""
+        ].filter(Boolean).join(" | ");
+        svg.appendChild(subtitle);
+        const grid = makeSvg("g", { class: "axis" });
+        for (let i = 0; i <= 4; i += 1) {
+          const yy = plotTop + i * plotHeight / 4;
+          grid.appendChild(makeSvg("line", { x1: plotLeft, x2: plotLeft + plotWidth, y1: yy, y2: yy, stroke: "#d8dce2" }));
+          const label = makeSvg("text", { x: plotLeft - 8, y: yy + 4, "text-anchor": "end" });
+          label.textContent = formatTooltipNumber(ymax * (1 - i / 4), 3);
+          grid.appendChild(label);
+        }
+        tickFractions.forEach(fraction => {
+          const xx = x(fraction);
+          grid.appendChild(makeSvg("line", { x1: xx, x2: xx, y1: plotTop + plotHeight, y2: plotTop + plotHeight + 5, stroke: "#d8dce2" }));
+          const label = makeSvg("text", { x: xx, y: plotTop + plotHeight + 20, "text-anchor": "middle" });
+          label.textContent = String(fraction);
+          grid.appendChild(label);
+        });
+        grid.appendChild(makeSvg("line", { x1: plotLeft, x2: plotLeft + plotWidth, y1: plotTop + plotHeight, y2: plotTop + plotHeight, stroke: "#85909b" }));
+        grid.appendChild(makeSvg("line", { x1: plotLeft, x2: plotLeft, y1: plotTop, y2: plotTop + plotHeight, stroke: "#85909b" }));
+        const yTitle = makeSvg("text", { x: facetX + 10, y: plotTop + plotHeight / 2, "text-anchor": "middle", transform: `rotate(-90 ${facetX + 10} ${plotTop + plotHeight / 2})`, fill: "#22252a", "font-size": 11, "font-weight": 700 });
+        yTitle.textContent = $("profileMode").value === "relative" ? "Relative intensity" : ($("scale").value === "log10" ? "log10 intensity" : "Mean intensity");
+        grid.appendChild(yTitle);
+        const xTitle = makeSvg("text", { x: plotLeft + plotWidth, y: plotTop + plotHeight + 42, "text-anchor": "end", fill: "#22252a", "font-size": 11, "font-weight": 700 });
+        xTitle.textContent = "SEC fraction";
+        grid.appendChild(xTitle);
+        svg.appendChild(grid);
+        facet.series.forEach(series => {
+          const visible = series.points.filter(point => Number.isFinite(point.mean));
+          if (visible.length < 1) return;
+          const upper = visible.map(point => `${x(point.fraction)},${scaledY(point.high, plotTop, plotHeight)}`);
+          const lower = visible.slice().reverse().map(point => `${x(point.fraction)},${scaledY(point.low, plotTop, plotHeight)}`);
+          const band = makeSvg("polygon", { points: upper.concat(lower).join(" "), fill: series.color, opacity: 0.16 });
+          svg.appendChild(band);
+          const line = visible.map(point => `${x(point.fraction)},${scaledY(point.mean, plotTop, plotHeight)}`).join(" ");
+          svg.appendChild(makeSvg("polyline", { points: line, fill: "none", stroke: series.color, "stroke-width": 2.8, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+          visible.forEach(point => {
+            const cx = x(point.fraction);
+            const cy = scaledY(point.mean, plotTop, plotHeight);
+            if ($("plotMode").value === "points") svg.appendChild(makeSvg("circle", { cx, cy, r: 2.6, fill: series.color }));
+            const hit = makeSvg("circle", { cx, cy, r: 8, fill: "#ffffff", opacity: 0, "pointer-events": "all" });
+            hit.addEventListener("mousemove", event => showProfileTooltip(event, {
+              label: rowLabel(facet.row),
+              condition: series.condition,
+              axis: { fraction: point.fraction, mw: null },
+              index: fractions.indexOf(point.fraction),
+              meanIntensity: point.mean,
+              sdIntensity: point.sd,
+              nReplicates: point.n
+            }));
+            hit.addEventListener("click", event => {
+              hideProfileTooltip();
+              selectProfilePoint({
+                label: `${rowLabel(facet.row)} | ${series.condition}`,
+                profileId: rowId(facet.row),
+                profileKeys: rowKeys(facet.row),
+                profileIndex: profileIndexForColumn(point.representativeColumn),
+                profileCol: point.representativeColumn,
+                axis: { fraction: point.fraction, mw: null }
+              });
+              if (event.stopPropagation) event.stopPropagation();
+            });
+            hit.addEventListener("mouseleave", hideProfileTooltip);
+            svg.appendChild(hit);
+          });
+        });
+      });
+      const visibleConditions = conditionOrder(unique(rowAggregates.flatMap(item => item.series.map(series => series.condition))));
+      $("profileLegend").innerHTML = visibleConditions.map(condition => `<span><i style="background:${conditionColor(condition)}"></i>${escapeHTML(condition)} mean +/- SD</span>`).join("");
+    }
+    function drawProfileEvidence() {
+      const svg = $("profileEvidenceChart");
+      if (!svg) return;
+      const point = state.selectedEvidencePoint;
+      const baseWidth = 1040, height = 320, left = 70, right = 20, top = 46, bottom = 94;
+      svg.setAttribute("viewBox", `0 0 ${baseWidth} ${height}`);
+      svg.style.width = "";
+      svg.innerHTML = "";
+      if (!point) {
+        $("profileEvidenceTitle").textContent = "Fraction peptide evidence";
+        $("profileEvidenceStatus").textContent = "No profile point selected";
+        const label = makeSvg("text", { x: 24, y: 42, class: "empty" });
+        label.textContent = "No profile point selected";
+        svg.appendChild(label);
+        return;
+      }
+      const pointMw = Number.isFinite(point.axis.mw) ? ` | MW ${formatTooltipNumber(point.axis.mw, 4)} kDa` : "";
+      $("profileEvidenceTitle").textContent = "Fraction peptide evidence";
+      $("profileEvidenceStatus").textContent = `${point.label} | fraction ${point.axis.fraction || ""}${pointMw}`;
+      if (!peptideEvidenceReady(point)) {
+        const label = makeSvg("text", { x: 24, y: 42, class: "empty" });
+        label.textContent = "Loading peptide evidence";
+        svg.appendChild(label);
+        return;
+      }
+      const rows = evidenceRowsForPoint(point);
+      if (rows.length < 1) {
+        const label = makeSvg("text", { x: 24, y: 42, class: "empty" });
+        label.textContent = "No peptide evidence for this profile point";
+        svg.appendChild(label);
+        return;
+      }
+      const width = Math.max(baseWidth, left + right + rows.length * 32);
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.style.width = `${width}px`;
+      const layers = [
+        { key: "raw_intensity", label: "Before loess", color: "#b98224", offset: -5 },
+        { key: "normalized_intensity", label: "After loess", color: "#2d6f98", offset: 5 }
+      ];
+      const values = rows.flatMap(row => layers.map(layer => numeric(row[layer.key], NaN))).filter(v => Number.isFinite(v) && v > 0);
+      if (values.length < 1) {
+        const label = makeSvg("text", { x: 24, y: 42, class: "empty" });
+        label.textContent = "No positive peptide intensity values for this profile point";
+        svg.appendChild(label);
+        return;
+      }
+      const logValues = values.map(v => Math.log10(Math.max(v, 1)));
+      const observedMin = Math.min(...logValues);
+      const observedMax = Math.max(...logValues);
+      const observedRange = Math.max(observedMax - observedMin, 0.25);
+      const yMin = Math.max(0, observedMin - observedRange * 0.12);
+      const yMax = observedMax + observedRange * 0.12;
+      const plotWidth = width - left - right;
+      const x = i => left + ((i + 0.5) / Math.max(rows.length, 1)) * plotWidth;
+      const y = value => top + (1 - ((Math.log10(Math.max(value, 1)) - yMin) / Math.max(yMax - yMin, 0.1))) * (height - top - bottom);
+      const grid = makeSvg("g", { class: "axis" });
+      for (let i = 0; i <= 4; i++) {
+        const yy = top + i * (height - top - bottom) / 4;
+        grid.appendChild(makeSvg("line", { x1: left, x2: width - right, y1: yy, y2: yy, stroke: "#d8dce2" }));
+        const tick = makeSvg("text", { x: 8, y: yy + 4 });
+        tick.textContent = (yMax - (yMax - yMin) * i / 4).toFixed(1);
+        grid.appendChild(tick);
+      }
+      grid.appendChild(makeSvg("line", { x1: left, x2: width - right, y1: height - bottom, y2: height - bottom, stroke: "#d8dce2" }));
+      const yTitle = makeSvg("text", { x: 16, y: top + (height - top - bottom) / 2, "text-anchor": "middle", transform: `rotate(-90 16 ${top + (height - top - bottom) / 2})` });
+      yTitle.textContent = "log10 intensity";
+      grid.appendChild(yTitle);
+      const xTitle = makeSvg("text", { x: width - right, y: height - 8, "text-anchor": "end" });
+      xTitle.textContent = "Peptide sequence";
+      grid.appendChild(xTitle);
+      svg.appendChild(grid);
+      layers.forEach((layer, idx) => {
+        const lx = width - right - 220 + idx * 112;
+        svg.appendChild(makeSvg("circle", { cx: lx, cy: 18, r: 4, fill: layer.color }));
+        const label = makeSvg("text", { x: lx + 8, y: 22, fill: "#666b74", "font-size": 11 });
+        label.textContent = layer.label;
+        svg.appendChild(label);
+      });
+      rows.forEach((row, i) => {
+        const sequence = row.peptide_sequence || row.modified_sequence || row.peptide_id || "";
+        const modified = row.modified_sequence || sequence;
+        const label = makeSvg("text", { x: x(i), y: height - bottom + 12, "text-anchor": "start", fill: "#666b74", "font-size": 7, transform: `rotate(55 ${x(i)} ${height - bottom + 12})` });
+        label.textContent = sequence;
+        svg.appendChild(label);
+        layers.forEach(layer => {
+          const intensity = numeric(row[layer.key], NaN);
+          if (!Number.isFinite(intensity) || intensity <= 0) return;
+          const pointEl = makeSvg("circle", { cx: x(i) + layer.offset, cy: y(intensity), r: 3.2, fill: layer.color, opacity: 0.88 });
+          pointEl.appendChild(makeSvg("title"));
+          pointEl.querySelector("title").textContent = `${modified}\n${layer.label}: ${formatTooltipNumber(intensity, 5)}\nq-value: ${formatTooltipNumber(row.q_value, 4)}`;
+          svg.appendChild(pointEl);
+        });
+      });
+    }
+    function drawAnnotation(rows) {
+      const preferred = ["feature_type", "Viewer_ID", "Accession", "Uniprot_ID", "Gene", "Protein name", "Pred. Protein MW [kDa]"];
+      const columns = preferred.filter(h => state.headers.includes(h));
+      renderTable("annotation", rows, columns, 16);
+    }
+    function renderTable(id, rows, columns, maxRows = 200) {
+      const table = $(id);
+      table.querySelector("thead").innerHTML = "<tr>" + columns.map(c => `<th>${escapeHTML(c)}</th>`).join("") + "</tr>";
+      table.querySelector("tbody").innerHTML = rows.slice(0, maxRows).map(row => "<tr>" + columns.map(c => `<td>${escapeHTML(row[c] == null ? "" : row[c])}</td>`).join("") + "</tr>").join("");
+    }
+    function peptideProteinLabel(protein) {
+      const row = state.rows.find(r => rowKeys(r).includes(protein));
+      if (row) return rowLabel(row);
+      const hit = state.peptideMap.find(p => p.protein_id === protein);
+      return [hit && hit.gene_name, protein].filter(Boolean).join(" | ");
+    }
+    function populatePeptideProteins() {
+      const proteins = unique(state.peptideMap.map(p => p.protein_id)).sort();
+      $("peptideProtein").innerHTML = proteins.slice(0, 3000).map(p => `<option value="${escapeHTML(p)}">${escapeHTML(peptideProteinLabel(p))}</option>`).join("");
+      syncPeptideProteinWithSelection();
+      populatePeptideProteoforms();
+    }
+    function syncPeptideProteinWithSelection() {
+      const protein = state.selectedIds[0];
+      if (!protein || !$("peptideProtein").options.length) return;
+      const option = Array.from($("peptideProtein").options).find(opt => opt.value === protein);
+      if (option) $("peptideProtein").value = option.value;
+      populatePeptideProteoforms();
+    }
+    function peptidesForCurrentProtein() {
+      const protein = $("peptideProtein").value;
+      const proteoform = $("peptideProteoform").value;
+      let rows = state.peptideMap.filter(p => p.protein_id === protein);
+      if (proteoform) rows = rows.filter(p => p.proteoform_id === proteoform);
+      return rows;
+    }
+    function populatePeptideProteoforms() {
+      const protein = $("peptideProtein").value;
+      const rows = state.peptideMap.filter(p => p.protein_id === protein);
+      const proteoforms = unique(rows.map(p => p.proteoform_id)).sort();
+      $("peptideProteoform").innerHTML = `<option value="">All</option>` + proteoforms.map(id => {
+        const label = proteoformLabelForId(id, rows.filter(row => row.proteoform_id === id));
+        return `<option value="${escapeHTML(id)}">${escapeHTML(label)}</option>`;
+      }).join("");
+    }
+    function logicalTrue(value) {
+      return ["true", "1", "yes", "y"].includes(String(value || "").toLowerCase());
+    }
+    function peptideAnnotationText(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      if (["n", "no", "false", "0", "none", "na", "nan", "null"].includes(text.toLowerCase())) return "";
+      return text;
+    }
+    function peptideIsSemiSpecific(row) {
+      const side = String(row.semi_specific_side || "").toLowerCase();
+      return logicalTrue(row.is_semi_specific) || String(row.cleavage_specificity_class || "").toLowerCase().includes("semi") || (side && !["none", "unknown", "false", "0"].includes(side));
+    }
+    function peptideIsFormylated(row) {
+      return peptidePtmClass(row) === "formyl";
+    }
+    function peptideHasIdentifiedPtm(row) {
+      return peptidePtmClass(row) !== "";
+    }
+    function peptideHasPotentialMod(row) {
+      return logicalTrue(row.contains_uniprot_modification_site) || String(row.contained_uniprot_modification_sites || "").includes("MOD_RES");
+    }
+    function peptideCategory(row) {
+      if (peptideIsFormylated(row)) return "formylation";
+      if (peptideHasIdentifiedPtm(row)) return "identified_ptm";
+      if (peptideIsSemiSpecific(row)) return "semi_specific";
+
+      return "peptide";
+    }
+    function peptideCategoryLabel(row) {
+      return {
+        formylation: "Formylation",
+        identified_ptm: "Identified PTM",
+        semi_specific: "Semi-specific cleavage",
+        potential_mod: "Potential UniProt MOD_RES",
+        peptide: "Peptide"
+      }[peptideCategory(row)];
+    }
+    function peptideSpecificity(row) {
+      if (peptideIsSemiSpecific(row)) {
+        const side = String(row.semi_specific_side || "").trim();
+        return side && !["none", "unknown", "false", "0"].includes(side.toLowerCase()) ? `semi-specific ${side}` : "semi-specific";
+      }
+      const label = peptideAnnotationText(row.cleavage_specificity_class);
+      return label || "specific";
+    }
+    function peptideColor(row, proteoformColors) {
+      if ($("peptideColor").value === "proteoform") return proteoformColors.get(row.proteoform_id || "unassigned") || "#2d6f98";
+      return "#2d6f98";
+    }
+    function ptmClassFromText(value) {
+      const text = String(value || "").toLowerCase();
+      if (text.includes("formyl") || text.includes("n[29]") || text.includes("[29]")) return "formyl";
+      if (text.includes("phospho") || text.includes("phosphoryl")) return "phospho";
+      if (text && !["false", "none", "na", "nan", "null"].includes(text) && !text.includes("carbamidomethyl")) return "other";
+      return "";
+    }
+    function peptidePtmClass(row, modifiedSites = null) {
+      const sites = modifiedSites || parseModifiedResiduePositions(row);
+      if (sites.length < 1) return "";
+      const exported = peptideAnnotationText(row.identified_ptm_class).toLowerCase();
+      if (["formyl", "phospho", "other"].includes(exported)) return exported;
+      const annotationText = [row.n_terminal_feature, row.modification_class, row.terminer_formylation_context, row.identified_ptm_summary].join(" ");
+      const sequenceText = String(row.modified_sequence || "");
+      if (/formyl/i.test(annotationText) || /^n\[29\]/i.test(sequenceText)) return "formyl";
+      if (/phospho|phosphoryl/i.test(annotationText) || sites.some(site => site.className === "phospho")) return "phospho";
+      return "";
+    }
+    function ptmColor(className) {
+      return { formyl: "#7cc7e8", phospho: "#f0cc45", other: "#9aa3ad" }[className] || "#9aa3ad";
+    }
+    function ptmLabel(className) {
+      return { formyl: "Formyl", phospho: "Phospho", other: "PTM" }[className] || "PTM";
+    }
+    function modResField(body, field) {
+      const pattern = new RegExp(`\\/${field}=("+)([\\s\\S]*?)\\1(?=\\s*;?\\s*\\/[A-Za-z_]+=|\\s*$)`);
+      const match = String(body || "").match(pattern);
+      return match ? match[2].replace(/""/g, "\"").trim() : "";
+    }
+    function parseUniprotModRes(text) {
+      const out = [];
+      const value = String(text || "");
+      const pattern = /MOD_RES\s+<?(\d+)(?:\.\.>?(\d+))?;([^]*?)(?=\s*MOD_RES\s+<?\d+|$)/g;
+      let match;
+      while ((match = pattern.exec(value)) !== null) {
+        const start = Number(match[1]);
+        const end = Number(match[2] || match[1]);
+        const body = match[3] || "";
+        const note = modResField(body, "note") || "MOD_RES";
+        const evidence = modResField(body, "evidence");
+        const className = ptmClassFromText([note, evidence].join(" ")) || "other";
+        out.push({ start, end, note, evidence, className, label: `${note}@${start === end ? start : `${start}-${end}`}` });
+      }
+      return out.filter(site => Number.isFinite(site.start) && Number.isFinite(site.end));
+    }
+    function referenceModResText(rows) {
+      const values = rows.flatMap(row => [row.reference_uniprot_modification_sites, row.contained_uniprot_modification_sites]);
+      return unique(values.filter(value => String(value || "").includes("MOD_RES"))).join("; ");
+    }
+    function parseModifiedResiduePositions(row) {
+      const modified = String(row.modified_sequence || "");
+      const start = numeric(row.start, NaN);
+      if (!Number.isFinite(start) || !modified.includes("[")) return [];
+      const out = [];
+      let residueIndex = 0;
+      for (let i = 0; i < modified.length; i++) {
+        const ch = modified[i];
+        if (/[A-Za-z]/.test(ch)) {
+          residueIndex += 1;
+          continue;
+        }
+        if (ch === "[") {
+          const end = modified.indexOf("]", i);
+          if (end > i) {
+            const mass = modified.slice(i + 1, end);
+            const absPos = start + Math.max(residueIndex - 1, 0);
+            out.push({ position: absPos, label: mass, className: ptmClassFromText(mass) });
+            i = end;
+          }
+        }
+      }
+      return out.filter(site => Number.isFinite(site.position));
+    }
+    function peptidePtmSites(row) {
+      const modifiedSites = parseModifiedResiduePositions(row);
+      if (modifiedSites.length < 1) return [];
+      const className = peptidePtmClass(row, modifiedSites);
+      if (!className) return [];
+      const summary = [row.identified_ptm_summary, row.modification_class, row.n_terminal_feature].join(" ");
+      const positions = [];
+      const atPattern = /(?:@|position\s+|pos\s+)(\d+)/gi;
+      let match;
+      while ((match = atPattern.exec(summary)) !== null) positions.push(Number(match[1]));
+      modifiedSites.forEach(site => positions.push(site.position));
+      return unique(positions.map(position => String(position))).map(position => ({
+        position: Number(position),
+        className,
+        label: ptmLabel(className)
+      })).filter(site => Number.isFinite(site.position));
+    }
+    function peptidePtmHoverHTML(row, site) {
+      return [
+        `<strong>${escapeHTML(site.label)} @ ${escapeHTML(site.position)}</strong>`,
+        `<span>Protein: ${escapeHTML(row.protein_id || "")}</span>`,
+        `<span>Gene: ${escapeHTML(row.gene_name || "n/a")}</span>`,
+        `<span>Peptide: ${escapeHTML(row.peptide_sequence || "")}</span>`,
+        `<span>Modified: ${escapeHTML(row.modified_sequence || "")}</span>`,
+        `<span>PTM: ${escapeHTML(peptideAnnotationText(row.identified_ptm_summary) || peptideAnnotationText(row.modification_class) || site.label)}</span>`
+      ].join("");
+    }
+    function referencePtmHoverHTML(site) {
+      return [
+        `<strong>${escapeHTML(site.note || "MOD_RES")} @ ${escapeHTML(site.start === site.end ? site.start : `${site.start}-${site.end}`)}</strong>`,
+        `<span>Protein: ${escapeHTML($("peptideProtein").value || "")}</span>`,
+        `<span>Reference protein MOD_RES</span>`,
+        site.evidence ? `<span>Evidence: ${escapeHTML(site.evidence)}</span>` : "",
+        `<span>Class: ${escapeHTML(ptmLabel(site.className))}</span>`
+      ].filter(Boolean).join("");
+    }    function peptideHoverHTML(row) {
+      const details = [
+        `<strong>${escapeHTML(row.modified_sequence || row.peptide_id || "")}</strong>`,
+        `<span>Protein: ${escapeHTML(row.protein_id || "")}</span>`,
+        `<span>Gene: ${escapeHTML(row.gene_name || "n/a")}</span>`,
+        `<span>Peptide: ${escapeHTML(row.peptide_sequence || "")}</span>`,
+        `<span>Modified: ${escapeHTML(row.modified_sequence || "")}</span>`,
+        `<span>Position: ${escapeHTML(row.start || "")}-${escapeHTML(row.end || "")}</span>`,
+        `<span>Type: ${escapeHTML(peptideCategoryLabel(row))}</span>`
+      ];
+      if (peptideIsSemiSpecific(row)) details.push(`<span>Semi-specific cleavage: ${escapeHTML(row.semi_specific_side || row.cleavage_specificity_class || "yes")}</span>`);
+      const processing = peptideAnnotationText(row.terminer_feature_type);
+      const ptm = peptidePtmSites(row).length > 0 ? (peptideAnnotationText(row.identified_ptm_summary) || peptideAnnotationText(row.modification_class) || peptideAnnotationText(row.n_terminal_feature)) : "";
+      if (processing) details.push(`<span>Processing: ${escapeHTML(processing)}</span>`);
+      if (ptm) details.push(`<span>PTM: ${escapeHTML(ptm)}</span>`);
+
+      return details.join("");
+    }
+    function showPeptideTooltipHTML(event, html) {
+      const tooltip = $("peptideTooltip");
+      const wrap = tooltip.parentElement;
+      const rect = wrap && wrap.getBoundingClientRect ? wrap.getBoundingClientRect() : { left: 0, top: 0, width: 1040, height: 500 };
+      const left = Math.min(Math.max(8, (event.clientX || rect.left) - rect.left + 12), Math.max(8, rect.width - 340));
+      const top = Math.min(Math.max(8, (event.clientY || rect.top) - rect.top + 12), Math.max(8, rect.height - 190));
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+      tooltip.innerHTML = html;
+      tooltip.style.display = "block";
+    }
+    function showPeptideTooltip(event, row) {
+      showPeptideTooltipHTML(event, peptideHoverHTML(row));
+    }
+    function hidePeptideTooltip() {
+      $("peptideTooltip").style.display = "none";
+    }
+    function renderPeptideDetail(row) {
+      const table = $("peptideTable");
+      const columns = [
+        "protein_id", "gene_name", "protein_name", "proteoform", "peptide_sequence", "modified_sequence",
+        "identified_ptm_summary", "ptm_class", "peptide_specificity"
+      ];
+      if (!row) {
+        $("peptideDetailStatus").textContent = "Click a visualized peptide";
+        table.style.display = "none";
+        renderTable("peptideTable", [], columns, 0);
+        return;
+      }
+      const detailRow = {
+        protein_id: row.protein_id || "",
+        gene_name: row.gene_name || "",
+        protein_name: row.protein_name || row["Protein name"] || "",
+        proteoform: row.proteoform_label || row.proteoform_id || "",
+        peptide_sequence: row.peptide_sequence || "",
+        modified_sequence: row.modified_sequence || "",
+        identified_ptm_summary: peptideAnnotationText(row.identified_ptm_summary),
+        ptm_class: peptideAnnotationText(row.identified_ptm_class),
+        peptide_specificity: peptideSpecificity(row)
+      };
+      table.style.display = "";
+      $("peptideDetailStatus").textContent = `${detailRow.protein_id} ${detailRow.gene_name ? `| ${detailRow.gene_name}` : ""} | ${row.start || ""}-${row.end || ""}`;
+      renderTable("peptideTable", [detailRow], columns, 1);
+    }
+    function peptideMapRowKey(row) {
+      if (!row) return "";
+      return [row.protein_id, row.proteoform_id, row.peptide_id, row.modified_sequence, row.start, row.end].map(value => String(value || "")).join("||");
+    }
+    function selectPeptideMapRow(row) {
+      state.selectedPeptideMapRow = row;
+      state.selectedPeptideMapKey = peptideMapRowKey(row);
+      renderPeptideDetail(row);
+    }
+    function clearPeptideMapSelection() {
+      state.selectedPeptideMapRow = null;
+      state.selectedPeptideMapKey = "";
+      renderPeptideDetail(null);
+    }
+    function assignPeptideLanes(rows) {
+      const lanes = [];
+      return rows.map(row => {
+        const start = numeric(row.start, 0);
+        const end = numeric(row.end, start);
+        let lane = lanes.findIndex(lastEnd => start > lastEnd + 2);
+        if (lane < 0) {
+          lane = lanes.length;
+          lanes.push(end);
+        } else {
+          lanes[lane] = end;
+        }
+        return Object.assign({}, row, { lane });
+      });
+    }
+    function proteoformDisplayId(row) {
+      const value = String(row.proteoform_id || "").trim();
+      return value && !["NA", "null", "undefined"].includes(value) ? value : "unassigned";
+    }
+    function proteoformLabelForId(id, rows = []) {
+      const preferred = rows.map(row => String(row.proteoform_label || "").trim()).find(Boolean);
+      if (preferred && !["NA", "null", "undefined"].includes(preferred)) return preferred;
+      const value = String(id || "").trim();
+      if (!value || value === "unassigned") return "Unassigned";
+      const gene = rows.map(row => String(row.gene_name || "").trim()).find(Boolean);
+      const suffix = value.match(/_([0-9]+)$/);
+      if (gene && suffix) return `${gene}_${suffix[1]}`;
+      return value;
+    }
+    function buildProteoformGroups(rows, maxRows = 900) {
+      const limited = rows.slice(0, maxRows);
+      const ids = unique(limited.map(proteoformDisplayId)).sort();
+      return ids.map((id, index) => {
+        const groupRows = limited.filter(row => proteoformDisplayId(row) === id);
+        const mappedRows = assignPeptideLanes(groupRows);
+        const maxLane = Math.max(...mappedRows.map(row => row.lane), 0);
+        return { id, label: proteoformLabelForId(id, groupRows), index, rows: mappedRows, maxLane };
+      }).filter(group => group.rows.length > 0);
+    }
+    function drawPeptideMap() {
+      const svg = $("peptideChart");
+      const rows = peptidesForCurrentProtein();
+      const baseWidth = 1040, left = 104, right = 26, peptideTop = 82, bottom = 88;
+      svg.innerHTML = "";
+      svg.style.height = "";
+      hidePeptideTooltip();
+      if (rows.length < 1) {
+        const width = baseWidth, height = 500;
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        const label = makeSvg("text", { x: 24, y: 40, class: "empty" });
+        label.textContent = "No peptide map rows";
+        svg.appendChild(label);
+        renderPeptideDetail(null);
+        return;
+      }
+
+      const orderedRows = rows
+        .filter(p => Number.isFinite(numeric(p.start, NaN)) && Number.isFinite(numeric(p.end, NaN)))
+        .sort((a, b) => numeric(a.start, 0) - numeric(b.start, 0) || numeric(a.end, 0) - numeric(b.end, 0) || String(a.modified_sequence || "").localeCompare(String(b.modified_sequence || "")));
+      const groups = buildProteoformGroups(orderedRows);
+      const proteinLength = Math.max(
+        ...rows.map(p => numeric(p.protein_length, NaN)).filter(Number.isFinite),
+        ...rows.map(p => numeric(p.end, NaN)).filter(Number.isFinite),
+        1
+      );
+      const width = Math.max(baseWidth, left + right + proteinLength * 1.15);
+      const laneHeight = 17;
+      const groupHeader = 20;
+      const groupGap = groups.length > 1 ? 32 : 20;
+      let cursorY = peptideTop;
+      groups.forEach(group => {
+        group.y = cursorY;
+        group.height = groupHeader + (group.maxLane + 1) * laneHeight + 10;
+        cursorY += group.height + groupGap;
+      });
+      const referenceY = cursorY + 22;
+      const height = Math.max(500, referenceY + bottom);
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.style.height = `${Math.min(960, height)}px`;
+      const x = pos => left + ((numeric(pos, 0) - 1) / Math.max(proteinLength - 1, 1)) * (width - left - right);
+
+      const axis = makeSvg("g", { class: "axis" });
+      const tickCount = 8;
+      for (let i = 0; i <= tickCount; i++) {
+        const pos = Math.max(1, Math.round(1 + (proteinLength - 1) * i / tickCount));
+        axis.appendChild(makeSvg("line", { x1: x(pos), x2: x(pos), y1: peptideTop - 22, y2: referenceY + 20, stroke: i === 0 || i === tickCount ? "#d8dce2" : "#eef1f3" }));
+        const label = makeSvg("text", { x: x(pos), y: height - 18, "text-anchor": "middle" });
+        label.textContent = pos;
+        axis.appendChild(label);
+      }
+      svg.appendChild(axis);
+
+      const colorByProteoform = new Map(groups.map((group, i) => [group.id, colors[i % colors.length]]));
+      const legend = [
+        { kind: "line", label: "semi-specific end", color: "#111827" },
+        { kind: "dot", label: "formyl", color: ptmColor("formyl") },
+        { kind: "dot", label: "phospho", color: ptmColor("phospho") },
+        { kind: "dot", label: "Reference MOD_RES", color: ptmColor("other") }
+      ];
+      legend.forEach((entry, i) => {
+        const lx = left + i * 135;
+        if (entry.kind === "line") {
+          svg.appendChild(makeSvg("line", { x1: lx, x2: lx + 13, y1: 31, y2: 18, stroke: entry.color, "stroke-width": 1.7 }));
+        } else {
+          svg.appendChild(makeSvg("line", { x1: lx + 6, x2: lx + 6, y1: 18, y2: 33, stroke: "#4b5563", "stroke-width": 1.1 }));
+          svg.appendChild(makeSvg("circle", { cx: lx + 6, cy: 17, r: 4.2, fill: entry.color, stroke: "#4b5563", "stroke-width": 0.8 }));
+        }
+        const label = makeSvg("text", { x: lx + 19, y: 26, fill: "#666b74", "font-size": 10 });
+        label.textContent = entry.label;
+        svg.appendChild(label);
+      });
+
+      groups.forEach(group => {
+        const bandFill = group.index % 2 === 0 ? "#ffffff" : "#f8fafb";
+        svg.appendChild(makeSvg("rect", { x: 6, y: group.y - 4, width: width - 12, height: group.height + 8, fill: bandFill, stroke: "#eef1f3", "stroke-width": 0.8, rx: 4 }));
+        const groupLabel = makeSvg("text", { x: 10, y: group.y + 10, fill: "#22252a", "font-size": 11, "font-weight": 700 });
+        groupLabel.textContent = group.label;
+        svg.appendChild(groupLabel);
+        svg.appendChild(makeSvg("line", { x1: left, x2: width - right, y1: group.y + 16, y2: group.y + 16, stroke: colorByProteoform.get(group.id) || "#2d6f98", "stroke-width": 1.2, opacity: 0.45 }));
+        group.rows.forEach(p => {
+          const y = group.y + groupHeader + p.lane * laneHeight;
+          const start = numeric(p.start, 0);
+          const end = Math.max(numeric(p.end, start + 1), start + 1);
+          const fill = peptideColor(p, colorByProteoform);
+          const selected = state.selectedPeptideMapKey && peptideMapRowKey(p) === state.selectedPeptideMapKey;
+          const rect = makeSvg("rect", { x: x(start), y, width: Math.max(2, x(end) - x(start)), height: 9, rx: 3, fill, opacity: 0.82, stroke: selected ? "#22252a" : "#ffffff", "stroke-width": selected ? 1.5 : 0.7 });
+          rect.addEventListener("mousemove", event => showPeptideTooltip(event, p));
+          rect.addEventListener("mouseleave", hidePeptideTooltip);
+          rect.addEventListener("click", event => {
+            selectPeptideMapRow(p);
+            drawPeptideMap();
+            if (event.stopPropagation) event.stopPropagation();
+          });
+          svg.appendChild(rect);
+
+          if (peptideIsSemiSpecific(p)) {
+            const side = String(p.semi_specific_side || "").toLowerCase();
+            const sx = side.includes("c") ? x(end) : x(start);
+            const slash = makeSvg("line", { x1: sx - 4, x2: sx + 4, y1: y + 11, y2: y - 2, stroke: "#111827", "stroke-width": 1.6 });
+            slash.addEventListener("mousemove", event => showPeptideTooltip(event, p));
+            slash.addEventListener("mouseleave", hidePeptideTooltip);
+            svg.appendChild(slash);
+          }
+
+          const ptmSites = peptidePtmSites(p);
+          ptmSites.forEach(site => {
+            const cx = x(site.position);
+            const color = ptmColor(site.className);
+            const marker = makeSvg("g", { "pointer-events": "all" });
+            marker.appendChild(makeSvg("line", { x1: cx, x2: cx, y1: y - 5, y2: y + 11, stroke: "#111827", "stroke-width": 1.15, opacity: 0.88 }));
+            marker.appendChild(makeSvg("circle", { cx, cy: y - 7, r: 4.1, fill: color, stroke: "#111827", "stroke-width": 0.8 }));
+            marker.addEventListener("mousemove", event => showPeptideTooltipHTML(event, peptidePtmHoverHTML(p, site)));
+            marker.addEventListener("mouseleave", hidePeptideTooltip);
+            svg.appendChild(marker);
+          });
+        });
+      });
+
+      const referenceLabel = makeSvg("text", { x: 10, y: referenceY + 4, fill: "#22252a", "font-size": 11, "font-weight": 700 });
+      referenceLabel.textContent = "Reference protein";
+      svg.appendChild(referenceLabel);
+      svg.appendChild(makeSvg("line", { x1: left, x2: width - right, y1: referenceY, y2: referenceY, stroke: "#22252a", "stroke-width": 5.2, "stroke-linecap": "round", opacity: 0.88 }));
+      const refLengthLabel = makeSvg("text", { x: left, y: referenceY + 28, fill: "#666b74", "font-size": 11 });
+      refLengthLabel.textContent = `${Math.round(proteinLength).toLocaleString()} aa`;
+      svg.appendChild(refLengthLabel);
+
+      const modSiteMap = new Map();
+      parseUniprotModRes(referenceModResText(rows)).forEach(site => {
+        const key = `${site.start}|${site.end}|${site.note}|${site.evidence}`;
+        if (!modSiteMap.has(key)) modSiteMap.set(key, site);
+      });
+      const referenceSites = Array.from(modSiteMap.values()).sort((a, b) => ((a.start + a.end) / 2) - ((b.start + b.end) / 2));
+      const layerEndX = [];
+      referenceSites.forEach(site => {
+        const cx = x((site.start + site.end) / 2);
+        let layer = layerEndX.findIndex(lastX => cx - lastX > 11);
+        if (layer < 0) {
+          layer = layerEndX.length;
+          layerEndX.push(cx);
+        } else {
+          layerEndX[layer] = cx;
+        }
+        const dotY = referenceY - 15 - layer * 9;
+        const color = ptmColor(site.className);
+        const marker = makeSvg("g", { "pointer-events": "all" });
+        marker.appendChild(makeSvg("line", { x1: cx, x2: cx, y1: referenceY - 6, y2: dotY + 3, stroke: "#4b5563", "stroke-width": 1.25, "stroke-linecap": "round" }));
+        marker.appendChild(makeSvg("circle", { cx, cy: dotY, r: 3.7, fill: color, stroke: "#4b5563", "stroke-width": 0.9 }));
+        marker.addEventListener("mousemove", event => showPeptideTooltipHTML(event, referencePtmHoverHTML(site)));
+        marker.addEventListener("mouseleave", hidePeptideTooltip);
+        svg.appendChild(marker);
+      });
+
+      const selectedRow = state.selectedPeptideMapKey ? rows.find(row => peptideMapRowKey(row) === state.selectedPeptideMapKey) : null;
+      if (selectedRow) {
+        state.selectedPeptideMapRow = selectedRow;
+        renderPeptideDetail(selectedRow);
+      } else {
+        clearPeptideMapSelection();
+      }
+    }
+    function buildNodeLookup() {
+      state.nodeLookup = new Map();
+      state.networkNodes.forEach(n => state.nodeLookup.set(n.node_id, n));
+    }
+    function edgeScore(edge) { return numeric(edge.score, 0); }
+    function boundedNetworkScore(edge) { return Math.max(0, Math.min(1, edgeScore(edge))); }
+    function networkFeatureTypeFromClass(value) {
+      const text = String(value || "").toLowerCase();
+      if (text.includes("shared")) return "shared";
+      if (text.includes("proteoform")) return "proteoform";
+      return "protein";
+    }
+    function networkEdgeClassLabel(value) {
+      const text = String(value || "").toLowerCase();
+      if (text.includes("shared")) return "shared proteoform feature";
+      if (text.includes("mixed")) return "mixed proteoform/protein feature";
+      if (text.includes("proteoform")) return "proteoform-specific feature";
+      return "protein feature";
+    }
+    function networkFeatureTypeLabel(value) {
+      return {
+        protein: "protein feature",
+        proteoform: "proteoform-specific feature",
+        shared: "shared proteoform feature"
+      }[value] || "protein feature";
+    }
+    function networkTypeColor(value) {
+      return {
+        protein: "#2d6f98",
+        proteoform: "#2f7d5c",
+        shared: "#b98224"
+      }[value] || "#2d6f98";
+    }
+    function networkEndpointType(edge, nodeId) {
+      const cls = String(edge.edge_resolution_class || edge.edge_feature_type || "").toLowerCase();
+      const id = String(nodeId || "");
+      if (cls.includes("shared")) return "shared";
+      if (cls.includes("mixed")) return /_[0-9]+$/.test(id) ? "proteoform" : "protein";
+      if (cls.includes("proteoform")) return "proteoform";
+      return "protein";
+    }
+    function networkNodeTypeFromValues(values) {
+      const priority = { shared: 3, proteoform: 2, protein: 1 };
+      return values.reduce((best, value) => (priority[value] || 0) > (priority[best] || 0) ? value : best, "protein");
+    }
+    function edgeSearchText(edge) {
+      return [
+        edge.condition, edge.complex_calling_mode, edge.source, edge.target, edge.source_protein, edge.target_protein, edge.source_gene, edge.target_gene,
+        edge.edge_resolution_class, edge.edge_feature_type, networkEdgeClassLabel(edge.edge_resolution_class || edge.edge_feature_type)
+      ].join(" ").toLowerCase();
+    }
+    function populateNetworkConditions() {
+      const select = $("networkCondition");
+      if (!select) return;
+      const conditions = unique(state.networkEdges.map(e => e.condition || e.complex_calling_mode).filter(Boolean)).sort();
+      select.innerHTML = `<option value="">All</option>` + conditions.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+    }
+    function networkEdgesForView() {
+      const minScore = numeric($("minScore").value, 0);
+      const query = $("networkSearch").value.trim().toLowerCase();
+      const condition = $("networkCondition") ? $("networkCondition").value : "";
+      let edges = state.networkEdges.filter(e => edgeScore(e) >= minScore);
+      if (condition) edges = edges.filter(e => String(e.condition || e.complex_calling_mode || "") === condition);
+      if (query) edges = edges.filter(e => edgeSearchText(e).includes(query));
+      edges.sort((a, b) => edgeScore(b) - edgeScore(a));
+      return edges.slice(0, Math.max(5, numeric($("networkMaxEdges").value, 80)));
+    }
+    function nodesForEdges(edges) {
+      const degree = new Map();
+      const types = new Map();
+      edges.forEach(e => {
+        [e.source, e.target].forEach(id => degree.set(id, (degree.get(id) || 0) + 1));
+        const sourceType = networkEndpointType(e, e.source);
+        const targetType = networkEndpointType(e, e.target);
+        if (!types.has(e.source)) types.set(e.source, []);
+        if (!types.has(e.target)) types.set(e.target, []);
+        types.get(e.source).push(sourceType);
+        types.get(e.target).push(targetType);
+      });
+      return Array.from(degree.keys()).map(id => {
+        const ref = state.nodeLookup.get(id) || {};
+        const type = networkNodeTypeFromValues(types.get(id) || [ref.node_feature_type || "protein"]);
+        const protein = ref.protein_id || id.replace(/_[0-9]+$/, "");
+        const gene = ref.gene_name || "";
+        return {
+          id,
+          protein_id: protein,
+          gene_name: gene,
+          label: gene || protein || id,
+          degree: degree.get(id),
+          node_feature_type: type,
+          n_called_features: numeric(ref.n_called_features, 0),
+          n_protein_features: numeric(ref.n_protein_features, 0),
+          n_proteoform_features: numeric(ref.n_proteoform_features, 0),
+          x: 0,
+          y: 0,
+          vx: 0,
+          vy: 0
+        };
+      });
+    }
+    function networkHash(value) {
+      let h = 2166136261;
+      String(value || "").split("").forEach(ch => {
+        h ^= ch.charCodeAt(0);
+        h = Math.imul(h, 16777619);
+      });
+      return h >>> 0;
+    }
+    function savedNetworkPosition(id) {
+      const pos = state.networkNodePositions.get(id);
+      return pos && Number.isFinite(pos.x) && Number.isFinite(pos.y) ? pos : null;
+    }
+    function saveNetworkPosition(node) {
+      state.networkNodePositions.set(node.id, { x: node.x, y: node.y });
+    }
+    function layoutNetwork(nodes, edges, width, height) {
+      const marginX = 82, marginY = 56;
+      const cx = width / 2, cy = height / 2;
+      const extentX = Math.max(180, width - marginX * 2);
+      const extentY = Math.max(180, height - marginY * 2);
+      nodes.forEach((n, i) => {
+        const saved = savedNetworkPosition(n.id);
+        if (saved) {
+          n.x = Math.max(marginX, Math.min(width - marginX, saved.x));
+          n.y = Math.max(marginY, Math.min(height - marginY, saved.y));
+        } else {
+          const h = networkHash(`${n.id}|${i}`);
+          const angle = ((h % 4096) / 4096) * Math.PI * 2;
+          const ring = 0.24 + (((h >>> 12) % 1000) / 1000) * 0.54;
+          n.x = cx + Math.cos(angle) * extentX * ring;
+          n.y = cy + Math.sin(angle) * extentY * ring;
+        }
+        n.vx = 0;
+        n.vy = 0;
+      });
+      const byId = new Map(nodes.map(n => [n.id, n]));
+      const iterations = Math.min(420, 160 + nodes.length * 5);
+      for (let iter = 0; iter < iterations; iter++) {
+        const alpha = 1 - iter / iterations;
+        edges.forEach(e => {
+          const a = byId.get(e.source), b = byId.get(e.target);
+          if (!a || !b) return;
+          let dx = b.x - a.x, dy = b.y - a.y;
+          let dist = Math.hypot(dx, dy) || 0.01;
+          const desired = 104 + (1 - boundedNetworkScore(e)) * 145;
+          const force = (dist - desired) * (0.013 + boundedNetworkScore(e) * 0.018) * alpha;
+          const fx = (dx / dist) * force;
+          const fy = (dy / dist) * force;
+          a.vx += fx;
+          a.vy += fy;
+          b.vx -= fx;
+          b.vy -= fy;
+        });
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            let dx = a.x - b.x, dy = a.y - b.y;
+            let dist2 = dx * dx + dy * dy;
+            if (dist2 < 0.01) {
+              const angle = ((i + 1) * 2.399963) % (Math.PI * 2);
+              dx = Math.cos(angle) * 0.1;
+              dy = Math.sin(angle) * 0.1;
+              dist2 = dx * dx + dy * dy;
+            }
+            const dist = Math.sqrt(dist2);
+            const minDist = 30 + Math.sqrt(a.degree + b.degree) * 4.8;
+            const charge = Math.min(9.5, (minDist * minDist) / dist2) * 0.55 * alpha;
+            const fx = (dx / dist) * charge;
+            const fy = (dy / dist) * charge;
+            a.vx += fx;
+            a.vy += fy;
+            b.vx -= fx;
+            b.vy -= fy;
+          }
+        }
+        nodes.forEach(n => {
+          n.vx += (cx - n.x) * 0.0012 * alpha;
+          n.vy += (cy - n.y) * 0.0012 * alpha;
+          n.vx *= 0.78;
+          n.vy *= 0.78;
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < marginX) { n.x = marginX; n.vx *= -0.25; }
+          if (n.x > width - marginX) { n.x = width - marginX; n.vx *= -0.25; }
+          if (n.y < marginY) { n.y = marginY; n.vy *= -0.25; }
+          if (n.y > height - marginY) { n.y = height - marginY; n.vy *= -0.25; }
+        });
+      }
+      return byId;
+    }
+    function showNetworkTooltipHTML(event, html) {
+      const tooltip = $("networkTooltip");
+      const wrap = tooltip.parentElement;
+      const rect = wrap && wrap.getBoundingClientRect ? wrap.getBoundingClientRect() : { left: 0, top: 0, width: 1040, height: 600 };
+      const left = Math.min(Math.max(8, (event.clientX || rect.left) - rect.left + 12), Math.max(8, rect.width - 360));
+      const top = Math.min(Math.max(8, (event.clientY || rect.top) - rect.top + 12), Math.max(8, rect.height - 210));
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+      tooltip.innerHTML = html;
+      tooltip.style.display = "block";
+    }
+    function hideNetworkTooltip() {
+      const tooltip = $("networkTooltip");
+      if (tooltip) tooltip.style.display = "none";
+    }
+    function networkNodeHoverHTML(node) {
+      return [
+        `<strong>${escapeHTML(node.label || node.id)}</strong>`,
+        `<span>Protein ID: ${escapeHTML(node.protein_id || node.id)}</span>`,
+        node.gene_name ? `<span>Gene ID: ${escapeHTML(node.gene_name)}</span>` : "",
+        `<span>Node feature type: ${escapeHTML(networkFeatureTypeLabel(node.node_feature_type))}</span>`,
+        `<span>Called features: ${Math.round(node.n_called_features).toLocaleString()}</span>`,
+        `<span>Protein features: ${Math.round(node.n_protein_features).toLocaleString()} | Proteoform features: ${Math.round(node.n_proteoform_features).toLocaleString()}</span>`,
+        `<span>Visible degree: ${node.degree.toLocaleString()}</span>`
+      ].filter(Boolean).join("");
+    }
+    function networkEdgeHoverHTML(edge) {
+      const score = formatTooltipNumber(edgeScore(edge), 4);
+      const qvalue = Number.isFinite(numeric(edge.qvalue, NaN)) ? formatTooltipNumber(edge.qvalue, 4) : "n/a";
+      const apex = Number.isFinite(numeric(edge.apex, NaN)) ? edge.apex : "n/a";
+      const apexMw = Number.isFinite(numeric(edge.apex_mw, NaN)) ? `${formatTooltipNumber(edge.apex_mw, 4)} kDa` : "n/a";
+      return [
+        `<strong>${escapeHTML(edge.source_gene || edge.source)} - ${escapeHTML(edge.target_gene || edge.target)}</strong>`,
+        `<span>${escapeHTML(edge.source_protein || edge.source)} -> ${escapeHTML(edge.target_protein || edge.target)}</span>`,
+        `<span>Interaction feature: ${escapeHTML(networkEdgeClassLabel(edge.edge_resolution_class || edge.edge_feature_type))}</span>`,
+        `<span>Connectivity score: ${escapeHTML(score)} | q-value: ${escapeHTML(qvalue)}</span>`,
+        `<span>Apex: ${escapeHTML(apex)} | MW: ${escapeHTML(apexMw)}</span>`
+      ].filter(Boolean).join("");
+    }
+    function selectNodeProfile(nodeId, mode = "add") {
+      const ref = state.nodeLookup.get(nodeId) || {};
+      const keys = unique([nodeId, ref.protein_id, ref.gene_name]).filter(Boolean);
+      const hit = state.proteinIndex.find(item => keys.includes(item.protein_id) || keys.includes(item.gene_id));
+      if (!hit) return "";
+      if (mode === "toggle") {
+        state.selectedIds = state.selectedIds.includes(hit.protein_id) ? state.selectedIds.filter(v => v !== hit.protein_id) : state.selectedIds.concat(hit.protein_id);
+      } else if (mode === "single") {
+        state.selectedIds = [hit.protein_id];
+      } else if (!state.selectedIds.includes(hit.protein_id)) {
+        state.selectedIds = state.selectedIds.concat(hit.protein_id);
+      }
+      state.selectedEvidencePoint = null;
+      refreshOptions();
+      syncPeptideProteinWithSelection();
+      if (state.activeTab === "profiles") {
+        drawProfile();
+        drawProfileEvidence();
+      } else if (state.activeTab === "peptides") {
+        drawPeptideMap();
+      }
+      return hit.protein_id;
+    }
+    function drawNetwork() {
+      $("minScoreLabel").textContent = Number($("minScore").value).toFixed(2);
+      const svg = $("networkChart");
+      hideNetworkTooltip();
+      const edges = networkEdgesForView();
+      const width = 1200, height = 820;
+      const marginX = 96, marginY = 78;
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.innerHTML = "";
+      if (edges.length < 1) {
+        const label = makeSvg("text", { x: 24, y: 40, class: "empty" });
+        label.textContent = "No network edges";
+        svg.appendChild(label);
+        $("networkLegend").innerHTML = "";
+        return;
+      }
+      const nodes = nodesForEdges(edges);
+      const byId = layoutNetwork(nodes, edges, width, height);
+      const edgeElements = [];
+      const nodeElements = [];
+      const edgeLayer = makeSvg("g", { class: "network-edges" });
+      const nodeLayer = makeSvg("g", { class: "network-nodes" });
+      const directNeighbors = new Map();
+      function addNetworkNeighbor(a, b) {
+        if (!directNeighbors.has(a)) directNeighbors.set(a, new Set());
+        directNeighbors.get(a).add(b);
+      }
+      edges.forEach(edge => {
+        addNetworkNeighbor(edge.source, edge.target);
+        addNetworkNeighbor(edge.target, edge.source);
+      });
+      if (state.networkFocusedNode && !byId.has(state.networkFocusedNode)) state.networkFocusedNode = "";
+      function svgPoint(event) {
+        const pt = svg.createSVGPoint();
+        pt.x = event.clientX;
+        pt.y = event.clientY;
+        const matrix = svg.getScreenCTM();
+        return matrix ? pt.matrixTransform(matrix.inverse()) : { x: pt.x, y: pt.y };
+      }
+      function clampNode(node) {
+        node.x = Math.max(marginX, Math.min(width - marginX, node.x));
+        node.y = Math.max(marginY, Math.min(height - marginY, node.y));
+      }
+      function moveRelatedNetworkNodes(sourceNode, dx, dy) {
+        if (!dx && !dy) return;
+        const direct = directNeighbors.get(sourceNode.id) || new Set();
+        const second = new Set();
+        direct.forEach(id => {
+          (directNeighbors.get(id) || new Set()).forEach(next => {
+            if (next !== sourceNode.id && !direct.has(next)) second.add(next);
+          });
+        });
+        direct.forEach(id => {
+          const node = byId.get(id);
+          if (!node) return;
+          node.x += dx * 0.58;
+          node.y += dy * 0.58;
+          clampNode(node);
+          saveNetworkPosition(node);
+        });
+        second.forEach(id => {
+          const node = byId.get(id);
+          if (!node) return;
+          node.x += dx * 0.22;
+          node.y += dy * 0.22;
+          clampNode(node);
+          saveNetworkPosition(node);
+        });
+      }
+      function updateNetworkGeometry() {
+        edgeElements.forEach(item => {
+          const a = byId.get(item.edge.source), b = byId.get(item.edge.target);
+          if (!a || !b) return;
+          item.el.setAttribute("x1", a.x);
+          item.el.setAttribute("y1", a.y);
+          item.el.setAttribute("x2", b.x);
+          item.el.setAttribute("y2", b.y);
+          if (item.label) {
+            item.label.setAttribute("x", (a.x + b.x) / 2);
+            item.label.setAttribute("y", (a.y + b.y) / 2 - 4);
+          }
+        });
+        nodeElements.forEach(item => item.el.setAttribute("transform", `translate(${item.node.x},${item.node.y})`));
+      }
+      function setFocus(nodeId = "", edgeId = "") {
+        const activeNode = nodeId || state.networkFocusedNode || "";
+        edgeElements.forEach(item => {
+          const incident = activeNode && (item.edge.source === activeNode || item.edge.target === activeNode);
+          const selected = edgeId && item.edge.edge_id === edgeId;
+          const visible = (!activeNode && !edgeId) || incident || selected;
+          item.el.setAttribute("opacity", visible ? item.baseOpacity : 0.07);
+          item.el.setAttribute("stroke-width", incident || selected ? item.baseWidth + 1.7 : item.baseWidth);
+          if (item.label) item.label.setAttribute("opacity", visible ? 0.74 : 0.08);
+        });
+        nodeElements.forEach(item => {
+          const incident = activeNode && item.node.id === activeNode;
+          const connected = activeNode && (directNeighbors.get(activeNode) || new Set()).has(item.node.id);
+          item.el.setAttribute("opacity", (!activeNode && !edgeId) || incident || connected ? 1 : 0.18);
+          if (item.circle) {
+            item.circle.setAttribute("stroke", incident ? "#202832" : "#ffffff");
+            item.circle.setAttribute("stroke-width", incident ? 3.2 : 1.6);
+          }
+        });
+      }
+      function renderNetworkLegend() {
+        const focused = state.networkFocusedNode && byId.get(state.networkFocusedNode);
+        $("networkLegend").innerHTML = [
+          `<span>${edges.length.toLocaleString()} top score-ranked edges</span>`,
+          `<span>${nodes.length.toLocaleString()} nodes</span>`,
+          `<span>drag pulls connected nodes</span>`,
+          focused ? `<span>focused: ${escapeHTML(focused.label || focused.id)}</span>` : `<span>click a node to hold its hub highlight</span>`,
+          `<span>double-click adds profile; Ctrl/cmd toggles</span>`,
+          `<span><i style="background:${networkTypeColor("protein")}"></i>protein</span>`,
+          `<span><i style="background:${networkTypeColor("proteoform")}"></i>proteoform-specific</span>`,
+          `<span><i style="background:${networkTypeColor("shared")}"></i>shared</span>`
+        ].join("");
+      }
+      edges.forEach(e => {
+        const a = byId.get(e.source), b = byId.get(e.target);
+        if (!a || !b) return;
+        const score = boundedNetworkScore(e);
+        const type = networkFeatureTypeFromClass(e.edge_feature_type || e.edge_resolution_class);
+        const baseWidth = 0.8 + score * 3.4;
+        const baseOpacity = 0.24 + score * 0.62;
+        const line = makeSvg("line", { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: networkTypeColor(type), "stroke-width": baseWidth, opacity: baseOpacity, "pointer-events": "stroke" });
+        const scoreText = makeSvg("text", { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 - 4, class: "network-edge-score", "text-anchor": "middle", opacity: 0.74 });
+        scoreText.textContent = formatTooltipNumber(edgeScore(e), 3);
+        line.addEventListener("mousemove", event => { setFocus("", e.edge_id); showNetworkTooltipHTML(event, networkEdgeHoverHTML(e)); });
+        line.addEventListener("mouseleave", () => { setFocus(); hideNetworkTooltip(); });
+        edgeLayer.appendChild(line);
+        edgeLayer.appendChild(scoreText);
+        edgeElements.push({ el: line, label: scoreText, edge: e, baseOpacity, baseWidth });
+      });
+      nodes.forEach(n => {
+        const group = makeSvg("g", { class: "node", transform: `translate(${n.x},${n.y})` });
+        const r = 6 + Math.min(12, Math.sqrt(n.degree) * 2.2);
+        const circle = makeSvg("circle", { cx: 0, cy: 0, r, fill: networkTypeColor(n.node_feature_type), stroke: "#ffffff", "stroke-width": 1.6 });
+        group.appendChild(circle);
+        const geneText = makeSvg("text", { x: r + 5, y: -2, class: "network-label", fill: "#22252a", "font-size": 11, "font-weight": 700 });
+        geneText.textContent = n.label || n.id;
+        group.appendChild(geneText);
+        if (n.protein_id && n.protein_id !== n.label) {
+          const proteinText = makeSvg("text", { x: r + 5, y: 11, class: "network-label", fill: "#666b74", "font-size": 9 });
+          proteinText.textContent = n.protein_id;
+          group.appendChild(proteinText);
+        }
+        let dragState = null;
+        group.addEventListener("pointerdown", event => {
+          event.preventDefault();
+          const p = svgPoint(event);
+          dragState = { pointerId: event.pointerId, offsetX: n.x - p.x, offsetY: n.y - p.y, moved: false };
+          group.classList.add("dragging");
+          try { group.setPointerCapture(event.pointerId); } catch (err) {}
+          setFocus(n.id, "");
+          hideNetworkTooltip();
+        });
+        group.addEventListener("pointermove", event => {
+          if (dragState && dragState.pointerId === event.pointerId) {
+            const p = svgPoint(event);
+            const oldX = n.x, oldY = n.y;
+            n.x = p.x + dragState.offsetX;
+            n.y = p.y + dragState.offsetY;
+            clampNode(n);
+            const dx = n.x - oldX;
+            const dy = n.y - oldY;
+            if (Math.hypot(dx, dy) > 0.5) dragState.moved = true;
+            moveRelatedNetworkNodes(n, dx, dy);
+            saveNetworkPosition(n);
+            updateNetworkGeometry();
+          } else {
+            setFocus(n.id, "");
+            showNetworkTooltipHTML(event, networkNodeHoverHTML(n));
+          }
+        });
+        group.addEventListener("pointerup", event => {
+          if (!dragState || dragState.pointerId !== event.pointerId) return;
+          const didMove = dragState.moved;
+          dragState = null;
+          group.classList.remove("dragging");
+          try { group.releasePointerCapture(event.pointerId); } catch (err) {}
+          saveNetworkPosition(n);
+          if (!didMove) {
+            state.networkFocusedNode = state.networkFocusedNode === n.id ? "" : n.id;
+            renderNetworkLegend();
+          }
+          setFocus();
+        });
+        group.addEventListener("dblclick", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          state.networkFocusedNode = n.id;
+          selectNodeProfile(n.id, (event.ctrlKey || event.metaKey) ? "toggle" : "add");
+          renderNetworkLegend();
+          setFocus();
+          hideNetworkTooltip();
+        });
+        group.addEventListener("pointercancel", event => {
+          if (dragState && dragState.pointerId === event.pointerId) {
+            dragState = null;
+            group.classList.remove("dragging");
+            setFocus();
+          }
+        });
+        group.addEventListener("mouseleave", () => { if (!dragState) { setFocus(); hideNetworkTooltip(); } });
+        nodeLayer.appendChild(group);
+        nodeElements.push({ el: group, node: n, circle });
+      });
+      svg.appendChild(edgeLayer);
+      svg.appendChild(nodeLayer);
+      renderNetworkLegend();
+      setFocus();
+    }
+    function drawScreening() {
+      const svg = $("screeningChart");
+      if (!svg) return;
+      const tooltip = $("screeningTooltip");
+      if (tooltip) tooltip.style.display = "none";
+      const ranked = state.proteinIndex
+        .filter(item => Number.isFinite(Number(item.assembly_perturbation_score)))
+        .slice()
+        .sort((a, b) => Number(b.assembly_perturbation_score || 0) - Number(a.assembly_perturbation_score || 0));
+      const pageSize = 5;
+      state.screeningOffset = Math.max(0, Math.min(state.screeningOffset || 0, Math.max(0, ranked.length - pageSize)));
+      const page = ranked.slice(state.screeningOffset, state.screeningOffset + pageSize);
+      $("screeningTitle").textContent = `Top assembly perturbation profiles ${state.screeningOffset + 1}-${Math.min(state.screeningOffset + pageSize, ranked.length)} of ${ranked.length}`;
+      $("screeningPrev").disabled = state.screeningOffset <= 0;
+      $("screeningNext").disabled = state.screeningOffset + pageSize >= ranked.length;
+      const width = 920;
+      const rowHeight = 126;
+      const top = 34;
+      const left = 146;
+      const right = 36;
+      const labelW = 134;
+      const plotH = 72;
+      const height = Math.max(260, top + page.length * rowHeight + 58);
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.style.height = `${height}px`;
+      svg.innerHTML = "";
+      if (page.length < 1) {
+        const label = makeSvg("text", { x: 24, y: 40, class: "empty" });
+        label.textContent = "No ranked profiles available";
+        svg.appendChild(label);
+        $("screeningLegend").innerHTML = "";
+        return;
+      }
+      const axes = state.axis.filter(axis => Number.isFinite(axis.fraction));
+      const fractions = Array.from(new Set(axes.map(axis => axis.fraction))).sort((a, b) => a - b);
+      const rows = page.map(item => {
+        const proteinRows = rowsForProtein(item.protein_id, "protein");
+        return { item, profile: proteinRows[0] || rowsForProtein(item.protein_id, "proteoform")[0] };
+      }).filter(entry => entry.profile);
+      function conditionForSample(sample) {
+        const text = String(sample || "").toLowerCase();
+        if (text.includes("control") || text.includes("dmso") || text.includes("vehicle")) return "Control";
+        if (text.includes("hsp90") || text.includes("17aag") || text.includes("17-aag") || text.includes("treated") || text.includes("tanespimycin")) return "HSP90i";
+        return String(sample || "Unknown");
+      }
+      function conditionColor(condition) {
+        return condition === "Control" ? "#2d6f98" : (condition === "HSP90i" ? "#b54b42" : "#7756a4");
+      }
+      function profileIntensityValue(value) {
+        const text = String(value == null ? "" : value).trim();
+        if (!text || ["NA", "NaN", "null", "undefined"].includes(text)) return NaN;
+        const parsed = Number(text);
+        return Number.isFinite(parsed) ? parsed : NaN;
+      }
+      function mean(values) {
+        const finite = values.filter(Number.isFinite);
+        return finite.length ? finite.reduce((a, b) => a + b, 0) / finite.length : NaN;
+      }
+      function sd(values) {
+        const finite = values.filter(Number.isFinite);
+        if (finite.length < 2) return 0;
+        const m = mean(finite);
+        return Math.sqrt(finite.reduce((sum, value) => sum + Math.pow(value - m, 2), 0) / (finite.length - 1));
+      }
+      function conditionOrder(conditions) {
+        const preferred = ["Control", "HSP90i"];
+        return preferred.filter(c => conditions.includes(c)).concat(conditions.filter(c => !preferred.includes(c)).sort());
+      }
+      function sampleValues(row, sample) {
+        const values = fractions.map(fraction => {
+          const axis = axes.find(item => item.sample === sample && item.fraction === fraction);
+          return axis ? profileIntensityValue(row[axis.name]) : NaN;
+        });
+        const maxValue = Math.max(...values.filter(Number.isFinite), 0);
+        if (maxValue > 0) {
+          for (let i = 0; i < values.length; i += 1) {
+            if (Number.isFinite(values[i])) values[i] = values[i] / maxValue;
+          }
+        }
+        return values;
+      }
+      function aggregate(row) {
+        const sampleGroups = new Map();
+        axes.forEach(axis => {
+          const condition = conditionForSample(axis.sample);
+          if (!sampleGroups.has(condition)) sampleGroups.set(condition, new Set());
+          sampleGroups.get(condition).add(axis.sample);
+        });
+        return conditionOrder(Array.from(sampleGroups.keys())).map(condition => {
+          const samples = Array.from(sampleGroups.get(condition));
+          const perSample = samples.map(sample => sampleValues(row, sample));
+          return {
+            condition,
+            color: conditionColor(condition),
+            points: fractions.map((fraction, idx) => {
+              const values = perSample.map(series => series[idx]).filter(Number.isFinite);
+              const m = mean(values);
+              const s = sd(values);
+              return {
+                fraction,
+                mean: m,
+                sd: s,
+                low: Number.isFinite(m) ? Math.max(0, m - s) : NaN,
+                high: Number.isFinite(m) ? Math.min(1.25, m + s) : NaN,
+                n: values.length
+              };
+            })
+          };
+        });
+      }
+      const plotWidth = width - left - right;
+      const x = fraction => left + ((fraction - fractions[0]) / Math.max(fractions[fractions.length - 1] - fractions[0], 1)) * plotWidth;
+      function showTooltip(event, html) {
+        const rect = tooltip.parentElement.getBoundingClientRect ? tooltip.parentElement.getBoundingClientRect() : { left: 0, top: 0, width: 1040, height: 500 };
+        tooltip.style.left = `${Math.min(Math.max(8, (event.clientX || rect.left) - rect.left + 12), Math.max(8, rect.width - 320))}px`;
+        tooltip.style.top = `${Math.min(Math.max(8, (event.clientY || rect.top) - rect.top + 12), Math.max(8, rect.height - 160))}px`;
+        tooltip.innerHTML = html;
+        tooltip.style.display = "block";
+      }
+      rows.forEach((entry, idx) => {
+        const rowY = top + idx * rowHeight;
+        const plotTop = rowY + 24;
+        const y = value => plotTop + (1 - Math.max(0, Math.min(1.25, value || 0)) / 1.25) * plotH;
+        const bg = makeSvg("rect", { x: left, y: plotTop, width: plotWidth, height: plotH, fill: idx % 2 ? "#fbfcfd" : "#ffffff", stroke: "#d8dce2" });
+        svg.appendChild(bg);
+        const rank = state.screeningOffset + idx + 1;
+        const label = makeSvg("text", { x: 10, y: rowY + 20, fill: "#22252a", "font-size": 12, "font-weight": 700 });
+        label.textContent = `${rank}. ${entry.item.gene_id || entry.item.protein_id}`;
+        svg.appendChild(label);
+        const sub = makeSvg("text", { x: 10, y: rowY + 38, fill: "#666b74", "font-size": 10 });
+        sub.textContent = `${entry.item.protein_id} | score ${Number(entry.item.assembly_perturbation_score || 0).toFixed(2)} | log2 FC ${Number(entry.item.log2_total_abundance_fc || 0).toFixed(2)}`;
+        svg.appendChild(sub);
+        [0, 0.5, 1.0].forEach(tick => {
+          const yy = y(tick);
+          svg.appendChild(makeSvg("line", { x1: left, x2: width - right, y1: yy, y2: yy, stroke: "#eef1f3" }));
+        });
+        if (idx === rows.length - 1) {
+          [fractions[0], 5, 10, 15, 20, fractions[fractions.length - 1]].filter((v, i, a) => fractions.includes(v) && a.indexOf(v) === i).forEach(fraction => {
+            const xx = x(fraction);
+            svg.appendChild(makeSvg("line", { x1: xx, x2: xx, y1: plotTop + plotH, y2: plotTop + plotH + 5, stroke: "#d8dce2" }));
+            const t = makeSvg("text", { x: xx, y: plotTop + plotH + 20, "text-anchor": "middle", fill: "#666b74", "font-size": 10 });
+            t.textContent = String(fraction);
+            svg.appendChild(t);
+          });
+          const axisTitle = makeSvg("text", { x: left + plotWidth / 2, y: plotTop + plotH + 42, "text-anchor": "middle", fill: "#22252a", "font-size": 11, "font-weight": 700 });
+          axisTitle.textContent = "SEC fraction: higher apparent MW assemblies -> lower apparent MW assemblies";
+          svg.appendChild(axisTitle);
+        }
+        aggregate(entry.profile).forEach(series => {
+          const visible = series.points.filter(point => Number.isFinite(point.mean));
+          if (visible.length < 1) return;
+          const peak = visible.reduce((best, point) => point.mean > best.mean ? point : best, visible[0]);
+          const peakX = x(peak.fraction);
+          svg.appendChild(makeSvg("line", {
+            x1: peakX,
+            x2: peakX,
+            y1: plotTop,
+            y2: plotTop + plotH,
+            stroke: series.color,
+            "stroke-width": 1.4,
+            "stroke-dasharray": "4 4",
+            opacity: 0.78
+          }));
+          const upper = visible.map(point => `${x(point.fraction)},${y(point.high)}`);
+          const lower = visible.slice().reverse().map(point => `${x(point.fraction)},${y(point.low)}`);
+          svg.appendChild(makeSvg("polygon", { points: upper.concat(lower).join(" "), fill: series.color, opacity: 0.14 }));
+          svg.appendChild(makeSvg("polyline", { points: visible.map(point => `${x(point.fraction)},${y(point.mean)}`).join(" "), fill: "none", stroke: series.color, "stroke-width": 2.2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+          visible.forEach(point => {
+            const hit = makeSvg("circle", { cx: x(point.fraction), cy: y(point.mean), r: 7, fill: "#ffffff", opacity: 0, "pointer-events": "all" });
+            hit.addEventListener("mousemove", event => showTooltip(event, [
+              `<strong>${escapeHTML(entry.item.gene_id || entry.item.protein_id)}</strong>`,
+              `<span>${escapeHTML(series.condition)} fraction ${escapeHTML(point.fraction)}</span>`,
+              `<span>Relative mean: ${escapeHTML(formatTooltipNumber(point.mean, 3))}</span>`,
+              `<span>SD: ${escapeHTML(formatTooltipNumber(point.sd, 3))}</span>`
+            ].join("")));
+            hit.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+            hit.addEventListener("click", () => {
+              state.selectedIds = [entry.item.protein_id];
+              refreshOptions();
+              syncPeptideProteinWithSelection();
+              setTab("profiles");
+            });
+            svg.appendChild(hit);
+          });
+        });
+      });
+      $("screeningLegend").innerHTML = `<span><i style="background:#2d6f98"></i>Control mean +/- SD</span><span><i style="background:#b54b42"></i>HSP90i mean +/- SD</span>`;
+    }
+function drawAll() {
+      $("smoothLabel").textContent = $("smooth").value;
+      if (state.activeTab === "profiles") drawProfile();
+      if (state.activeTab === "screening") drawScreening();
+      if (state.activeTab === "peptides") drawPeptideMap();
+      if (state.activeTab === "network") drawNetwork();
+    }
+    function setTab(tab) {
+      state.activeTab = tab;
+      document.querySelectorAll(".tabButton").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+      document.querySelectorAll(".tab").forEach(el => el.classList.toggle("active", el.id === `tab-${tab}`));
+      drawAll();
+    }
+    async function boot() {
+      try {
+        state.manifest = await fetchJSON("viewer_manifest.json", {});
+        const profileFile = fileName("profiles", "profiles.tsv");
+        const metadataFile = fileName("metadata", "metadata.json");
+        const [profileText, meta, peptideText, pointStatsText, edgeText, nodeText] = await Promise.all([
+          fetch(profileFile).then(r => { if (!r.ok) throw new Error(`${profileFile} not found`); return r.text(); }),
+          fetchJSON(metadataFile, {}),
+          fetchTextOptional(fileName("peptide_map", "peptide_map.tsv")),
+          fetchTextOptional(fileName("profile_point_stats", "profile_point_stats.tsv")),
+          fetchTextOptional(fileName("network_edges", "network_edges.tsv")),
+          fetchTextOptional(fileName("network_nodes", "network_nodes.tsv"))
+        ]);
+        Object.assign(state, parseTSV(profileText));
+        state.meta = meta || {};
+        const profilePattern = state.meta.PROFILE_COLUMN_PATTERN ? new RegExp(state.meta.PROFILE_COLUMN_PATTERN) : /^[^|]+\|[0-9]+$/;
+        state.profileColumns = state.headers.filter(h => profilePattern.test(h));
+        state.idColumn = state.meta.ID_COLUMN || ["Viewer_ID", "id", "protein_id", "proteoform_id", "peptide_id", "Accession"].find(c => state.headers.includes(c));
+        if (!state.idColumn) throw new Error("No ID column found");
+        if (state.profileColumns.length < 1) throw new Error("No sample|fraction profile columns found");
+        state.peptideMap = parseTSV(peptideText).rows;
+        buildPointStats(parseTSV(pointStatsText).rows);
+        state.networkEdges = parseTSV(edgeText).rows;
+        state.networkNodes = parseTSV(nodeText).rows;
+        populateNetworkConditions();
+        buildNodeLookup();
+        initAxis();
+        buildProteinIndex();
+        $("title").textContent = state.meta.MAINTITLE || state.meta.PIPELINE || "Complexome Viewer";
+        $("subtitle").textContent = [state.meta.SPECIES, state.meta.VERSION, state.meta.COMMENTS].filter(Boolean).join(" | ");
+        state.selectedIds = state.proteinIndex.length ? [state.proteinIndex[0].protein_id] : [];
+        refreshOptions();
+        populatePeptideProteins();
+        drawAll();
+      } catch (error) {
+        $("status").innerHTML = `<span class="error">${escapeHTML(error.message)}</span>`;
+      }
+    }
+    $("search").addEventListener("input", refreshOptions);
+    $("proteinTable").addEventListener("click", selectProteinRow);
+    $("proteinTable").addEventListener("dblclick", addProteinRow);
+    $("selectedProteins").addEventListener("click", removeSelectedProtein);
+    ["scale", "profileMode", "smooth", "plotMode", "maxProfiles"].forEach(id => $(id).addEventListener("input", drawAll));
+    ["minAbsLog2Fc", "maxAdjustedP"].forEach(id => $(id).addEventListener("input", () => { refreshOptions(); drawAll(); }));
+    ["sampleFilter", "profileDetail"].forEach(id => $(id).addEventListener("input", () => { state.selectedEvidencePoint = null; drawAll(); }));
+    $("clear").addEventListener("click", () => { state.selectedIds = []; state.selectedEvidencePoint = null; refreshOptions(); syncPeptideProteinWithSelection(); drawAll(); });
+    $("peptideProtein").addEventListener("change", () => { clearPeptideMapSelection(); populatePeptideProteoforms(); drawPeptideMap(); });
+    $("peptideProteoform").addEventListener("change", () => { clearPeptideMapSelection(); drawPeptideMap(); });
+    $("peptideColor").addEventListener("change", drawPeptideMap);
+    $("screeningPrev").addEventListener("click", () => { state.screeningOffset = Math.max(0, (state.screeningOffset || 0) - 5); drawScreening(); });
+    $("screeningNext").addEventListener("click", () => { state.screeningOffset = (state.screeningOffset || 0) + 5; drawScreening(); });
+    ["networkSearch", "networkCondition", "minScore", "networkMaxEdges"].forEach(id => $(id).addEventListener("input", drawNetwork));
+    document.querySelectorAll(".tabButton").forEach(btn => btn.addEventListener("click", () => setTab(btn.dataset.tab)));
+    window.addEventListener("resize", drawAll);
+    boot();
+  </script>
+</body>
+</html>

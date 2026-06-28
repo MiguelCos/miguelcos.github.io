@@ -7,6 +7,17 @@ Selected public GitHub projects related to proteomics bioinformatics, terminomic
 
 ::: {.card-grid}
 ::: {.project-card}
+### Drug-Response Complexome Screening Viewer
+Static SEC-MS complexome showcase for exploring HSP90 inhibitor-associated protein assembly perturbations in public processed proteomics data.
+
+:::{.tags}
+[`SEC-MS`]{.tag} [`complexome`]{.tag} [`proteomics`]{.tag} [`viewer`]{.tag}
+:::
+
+[Project page](projects/drug-response-complexome/)
+:::
+
+::: {.project-card}
 ### TermineR
 R package for extracting, annotating, and visualizing endogenous proteolytic processing information from shotgun proteomics data.
 
