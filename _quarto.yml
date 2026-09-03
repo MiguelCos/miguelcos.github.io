@@ -7,7 +7,7 @@ project:
 website:
   title: "Miguel Cosenza Contreras"
   site-url: "https://miguelcos.github.io"
-  description: "Personal professional website of Miguel Cosenza Contreras, a proteomics bioinformatician and data scientist in Freiburg, Germany."
+  description: "Personal professional website of Miguel Cosenza Contreras, a proteomics data scientist, computational biologist, and statistical programmer in Freiburg, Germany."
   favicon: assets/favicon.svg
   repo-url: "https://github.com/MiguelCos/miguelcos.github.io"
   navbar:

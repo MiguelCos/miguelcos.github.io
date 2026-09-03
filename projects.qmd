@@ -116,8 +116,3 @@ Collection of scripts, functions, and snippets for processing and analyzing prot
 [GitHub](https://github.com/MiguelCos/1_Proteomics_data_analysis) | [Project page](projects/proteomics-data-analysis/)
 :::
 :::
-
-## Additional Public Repositories
-
-- [Fragterminomics](https://github.com/MiguelCos/Fragterminomics)
-- [fragenterminomics](https://github.com/MiguelCos/fragenterminomics)

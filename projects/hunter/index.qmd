@@ -17,6 +17,7 @@ The workflow is based on the TermineR approach, with modifications for terminall
 ## Links
 
 - [GitHub repository](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline)
+- [HUNTER-DIA book chapter](https://doi.org/10.1016/bs.mie.2025.06.025)
 
 :::{.tags}
 [`Quarto`]{.tag} [`DIA`]{.tag} [`terminomics`]{.tag} [`HUNTER`]{.tag}

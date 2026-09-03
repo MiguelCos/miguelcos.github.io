@@ -17,7 +17,8 @@ The package provides adapter functions for common search engine outputs, peptide
 ## Links
 
 - [GitHub repository](https://github.com/MiguelCos/TermineR)
-- [Publication DOI](https://doi.org/10.1002/pmic.202300491)
+- [TermineR method paper](https://doi.org/10.1002/pmic.202300491)
+- [TermineR book chapter](https://doi.org/10.1016/bs.mie.2025.06.004)
 
 :::{.tags}
 [`R`]{.tag} [`proteomics`]{.tag} [`terminomics`]{.tag} [`protease degradomics`]{.tag}

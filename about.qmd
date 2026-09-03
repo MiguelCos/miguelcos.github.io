@@ -3,15 +3,15 @@ title: "About"
 description: "Professional profile of Miguel Cosenza Contreras."
 ---
 
-Miguel Cosenza Contreras is a proteomics data scientist based in Freiburg im Breisgau, Germany. Trained as a biologist, he works at the interface of experimental design and data analysis, with a focus on mass-spectrometry-based proteomics in protein interaction research, cancer, cardiac disease, and infection biology.
+Miguel Cosenza Contreras is a proteomics data scientist, computational biologist, and statistical programmer based in Freiburg im Breisgau, Germany. He holds a PhD in Biology and develops computational tools and reproducible analytical solutions for multidisciplinary life-science research.
 
-Miguel has over six years of experience in clinical and experimental research. His work involves developing and applying statistical and computational methods for the integrative analysis of proteomics, terminomics, lipidomics, and proteogenomics data.
+His work centers on connecting biology, statistics, clinical research, informatics, and automation. In multidisciplinary teams, he translates complex scientific questions and shared analytical decisions into workflows for data transformation, quality control, statistical analysis, visualization, and reporting. His experience includes more than eight years of R programming and the analysis of clinically annotated, patient-derived datasets across oncology and cardiovascular research, including cohort comparisons, longitudinal measurements, biomarker-oriented exploration, and multivariate study designs. His multi-omics work integrates proteomics with terminomics, lipidomics or metabolomics, proteogenomics, and clinical variables.
 
-Since April 2024, Miguel has worked as a postdoctoral researcher / bioinformatician in the Laboratory of Protease Degradomics and SFB1381 - Dynamic Organization of Cellular Protein Machineries at the Faculty of Biology, University of Freiburg, with Prof. Dr. Pitter Huesgen. His current work focuses on building and maintaining bioinformatic pipelines for studying protein interactions and proteolytic activity, including complexome profiling, co-immunoprecipitation assays, blue-native gel mass spectrometry experiments, and shotgun mass-spectrometry-based proteomics data analysis.
+Since April 2024, Miguel has worked as a postdoctoral researcher / bioinformatician in the Laboratory of Protease Degradomics and SFB1381 - Dynamic Organization of Cellular Protein Machineries at the Faculty of Biology, University of Freiburg, with Prof. Dr. Pitter Huesgen. His current work focuses on building and maintaining modular R and Bash pipelines for studying protein interactions and proteolytic activity, including complexome profiling, co-immunoprecipitation assays, blue-native gel mass spectrometry experiments, and shotgun proteomics. These workflows use explicit parameters, standardized inputs, quality-control steps, Git-based development, HPC environments, and reproducible Quarto reporting.
 
-From 2019 to 2024, he was a doctoral researcher in the Laboratory of Translational Proteomics at the Institute of Surgical Pathology, University Medical Center Freiburg, supervised by Prof. Dr. Oliver Schilling. His doctoral work focused on proteomics data science and multi-omics data integration for exploratory insight into disease mechanisms.
+From 2019 to 2024, he was a doctoral researcher in the Laboratory of Translational Proteomics at the Institute of Surgical Pathology, University Medical Center Freiburg, supervised by Prof. Dr. Oliver Schilling. As the group's main bioinformatics-focused scientist, he worked between clinicians, experimental scientists, statisticians, and core-facility users, implementing shared decisions about study design, clinical variables, comparisons, and statistical approaches in R. His doctoral work focused on proteomics data science and multi-omics integration for exploratory insight into disease mechanisms.
 
-A recurring theme across his work is reproducibility: using R, Quarto, transparent project structure, and reusable analysis code to make complex proteomics workflows easier to inspect, adapt, and extend.
+A recurring theme across his work is reproducibility: using reusable functions and software, validation checks, transparent project structure, version control, and documented handover to make complex analytical workflows easier to inspect, adapt, and extend.
 
 ## Research Themes
 
@@ -33,7 +33,7 @@ Statistical and computational integration of proteomics with terminomics, lipido
 
 ::: {.info-card}
 ### Reproducible Analysis
-Human-readable R, Bioconductor, Quarto, Markdown, and GitHub workflows for mass-spectrometry data analysis.
+Human-readable R, Bash, Bioconductor, Quarto, and GitHub workflows with structured inputs, validation, version control, and reproducible reporting.
 :::
 
 ::: {.info-card}
