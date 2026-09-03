@@ -7,6 +7,17 @@ Selected public GitHub projects related to proteomics bioinformatics, terminomic
 
 ::: {.card-grid}
 ::: {.project-card}
+### Standardized Clinical Data Reproducibility Demo
+R and Quarto learning demonstrator showing traceable transformation of public standardized clinical-trial test data into analysis-ready structures, automated validation, and reproducible Tables, Listings, and Figures.
+
+:::{.tags}
+[`R`]{.tag} [`clinical data`]{.tag} [`reproducibility`]{.tag} [`validation`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/clinical-data-reproducibility-demo) | [Live report](https://miguelcos.github.io/clinical-data-reproducibility-demo/) | [Project page](projects/clinical-data-reproducibility/)
+:::
+
+::: {.project-card}
 ### Drug-Response Complexome Screening Viewer
 Static SEC-MS complexome showcase for exploring HSP90 inhibitor-associated protein assembly perturbations in public processed proteomics data.
 
