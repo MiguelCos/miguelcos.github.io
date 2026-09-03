@@ -47,45 +47,55 @@ At the University of Freiburg, within SFB1381 - Dynamic Organization of Cellular
 Each theme links to representative projects and selected publications.
 
 ::: {.content-grid}
+::: {.theme-block}
 ::: {.info-card}
 ### Protein Complexes
 Pipelines for studying protein-protein interactions from shotgun mass-spectrometry-based proteomics data, including complexome and co-immunoprecipitation experiments.
+:::
 
 :::{.theme-links}
 [ICP55 complex integrity](https://doi.org/10.1038/s41594-026-01876-7){.theme-link} [cbb~3~ oxidase assembly](https://doi.org/10.1016/j.jmb.2026.169945){.theme-link} [Complexome viewer](projects/drug-response-complexome/){.theme-link}
 :::
 :::
 
+::: {.theme-block}
 ::: {.info-card}
 ### Protease Degradomics
 Bioinformatic analysis of proteolytic activity, protein termini, and degradomics workflows across experimental systems.
+:::
 
 :::{.theme-links}
 [TermineR publication](https://doi.org/10.1002/pmic.202300491){.theme-link} [TermineR repository](https://github.com/MiguelCos/TermineR){.theme-link} [HUNTER repository](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline){.theme-link} [TermineR book chapter](https://doi.org/10.1016/bs.mie.2025.06.004){.theme-link} [HUNTER-DIA book chapter](https://doi.org/10.1016/bs.mie.2025.06.025){.theme-link} [CPB1 breast-cancer terminomics](https://www.muni.cz/en/research/publications/2537258){.theme-link} [Inflammasome SEC-MS](https://doi.org/10.1039/D4MO00163J){.theme-link}
 :::
 :::
 
+::: {.theme-block}
 ::: {.info-card}
 ### Multi-omics Integration
 Statistical and computational integration across proteomics, terminomics, lipidomics, proteogenomics, and clinical data.
+:::
 
 :::{.theme-links}
 [GBM study](https://doi.org/10.1093/neuonc/noad208){.theme-link} [GBM project](projects/gbm-proteometabolomics/){.theme-link} [Snake venom multi-omics](https://doi.org/10.1016/j.mcpro.2025.101023){.theme-link}
 :::
 :::
 
+::: {.theme-block}
 ::: {.info-card}
 ### Reproducible Workflows
 R, Bioconductor, Quarto, and GitHub workflows for transparent, reusable mass-spectrometry data analysis.
+:::
 
 :::{.theme-links}
 [BAG3 analysis](projects/bag3-fractionated-proteomics/){.theme-link} [Necrodegradomics repository](https://github.com/MiguelCos/Necrodegradomics){.theme-link} [GBM paper repository](https://github.com/MiguelCos/gbm_manuscript_data_analysis){.theme-link} [Dinh bladder-cancer paper](https://doi.org/10.1002/path.6367){.theme-link} [Steenbuck breast-cancer preprint](https://doi.org/10.1101/2024.05.24.595719){.theme-link} [Werner GBM preprint](https://doi.org/10.1101/2024.02.29.582688){.theme-link} [Clinical data demo](projects/clinical-data-reproducibility/){.theme-link}
 :::
 :::
 
+::: {.theme-block}
 ::: {.info-card}
 ### Clinical Proteomics
 Translational biomarker discovery and disease-mechanism studies using mass-spectrometry-based proteomics.
+:::
 
 :::{.theme-links}
 [BAG3 muscle proteomics](https://doi.org/10.1038/s41467-026-75501-y){.theme-link} [Cholangiocarcinoma](https://doi.org/10.1038/s41467-026-70817-1){.theme-link} [GBM proteometabolomics](https://doi.org/10.1093/neuonc/noad208){.theme-link}
@@ -94,6 +104,31 @@ Translational biomarker discovery and disease-mechanism studies using mass-spect
 :::
 
 ## Selected Publications
+
+::: {.card-grid}
+::: {.publication-card}
+### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
+Software and method paper for extracting endogenous proteolytic processing information from shotgun proteomics.
+
+[DOI](https://doi.org/10.1002/pmic.202300491) | [Project](https://github.com/MiguelCos/TermineR)
+:::
+
+::: {.publication-card}
+### Proteometabolomics of initial and recurrent glioblastoma
+Clinical proteomics and multi-omics integration study of recurrent glioblastoma biology.
+
+[DOI](https://doi.org/10.1093/neuonc/noad208) | [Analysis project](projects/gbm-proteometabolomics/)
+:::
+
+::: {.publication-card}
+### Proteome alterations in human autopsy tissues in relation to time after death
+Necrodegradomics study with openly available preprocessing, statistical analysis, reports, and visualizations.
+
+[DOI](https://doi.org/10.1007/s00018-023-04754-3) | [Analysis project](projects/necrodegradomics/)
+:::
+:::
+
+### Recent Collaboration Publications
 
 ::: {.card-grid}
 ::: {.publication-card}

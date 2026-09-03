@@ -3,9 +3,34 @@ title: "Publications"
 description: "Selected publications by Miguel Cosenza Contreras."
 ---
 
-Selected publications are grouped by the research applications they demonstrate. Metadata and links were checked against PubMed and publisher records.
+Core publications are presented first, followed by selected recent collaborations and an expanded list. Metadata and links were checked against PubMed and publisher records.
 
-## Featured Applications
+## Selected Publications
+
+::: {.card-grid}
+::: {.publication-card}
+### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
+**Cosenza-Contreras M. et al. 2024.** *Proteomics* 24(19). [DOI: 10.1002/pmic.202300491](https://doi.org/10.1002/pmic.202300491)
+
+Software and method paper connected to the [TermineR](https://github.com/MiguelCos/TermineR) R package, turning shotgun proteomics data into interpretable information on endogenous proteolytic processing.
+:::
+
+::: {.publication-card}
+### Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism
+**Cosenza-Contreras M. et al. 2024.** *Neuro-Oncology* 26(3):488-502. [DOI: 10.1093/neuonc/noad208](https://doi.org/10.1093/neuonc/noad208)
+
+Clinical proteomics and multi-omics integration study combining proteomics, lipidomics, proteogenomics, and clinical interpretation in recurrent glioblastoma, supported by a public [analysis repository](https://github.com/MiguelCos/gbm_manuscript_data_analysis).
+:::
+
+::: {.publication-card}
+### Proteome alterations in human autopsy tissues in relation to time after death
+**Kocsmar E., Schmid M., Cosenza-Contreras M. et al. 2023.** *Cellular and Molecular Life Sciences* 80:117. [DOI: 10.1007/s00018-023-04754-3](https://doi.org/10.1007/s00018-023-04754-3)
+
+Necrodegradomics study with openly available [preprocessing, statistical analysis, reports, and visualizations](https://github.com/MiguelCos/Necrodegradomics).
+:::
+:::
+
+## Recent Collaboration Publications
 
 ::: {.card-grid}
 ::: {.publication-card}
@@ -45,34 +70,13 @@ Fractionated human muscle proteomics and phosphoproteomics identify a BAG3-linke
 - **Steenbuck I.D. et al. 2024.** Serum Proteome Profiling Identifies N-Cadherin and C-Met as Early Marker Candidates of Therapeutic Response to Neoadjuvant Chemotherapy in Breast Cancer. *bioRxiv* preprint. [DOI: 10.1101/2024.05.24.595719](https://doi.org/10.1101/2024.05.24.595719)
 - **Werner T. et al. 2024.** Proteomic profiling of IDH-wildtype Glioblastoma Tissue and Serum uncovers prognostic Subtypes and Marker Candidates. *bioRxiv* preprint. [DOI: 10.1101/2024.02.29.582688](https://doi.org/10.1101/2024.02.29.582688)
 
-## Established Selected Publications
-
-::: {.publication-card}
-### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
-**Cosenza-Contreras M. et al. 2024.** *Proteomics* 24(19). [DOI: 10.1002/pmic.202300491](https://doi.org/10.1002/pmic.202300491)
-
-Software and method paper connected to the [TermineR](https://github.com/MiguelCos/TermineR) R package. It reflects Miguel's work on turning shotgun proteomics data into interpretable information on endogenous proteolytic processing.
-:::
-
-::: {.publication-card}
-### Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism
-**Cosenza-Contreras M. et al. 2024.** *Neuro-Oncology* 26(3):488-502. [DOI: 10.1093/neuonc/noad208](https://doi.org/10.1093/neuonc/noad208)
-
-Clinical proteomics and multi-omics integration study combining proteomics, lipidomics, proteogenomics, and clinical interpretation in recurrent glioblastoma.
-:::
+## Earlier Selected Publication
 
 ::: {.publication-card}
 ### The Schistosomiasis SpleenOME: Unveiling the Proteomic Landscape of Splenomegaly Using Label-Free Mass Spectrometry
 **Cosenza-Contreras M. et al. 2018/2019.** *Frontiers in Immunology* 9:3137. [DOI: 10.3389/fimmu.2018.03137](https://doi.org/10.3389/fimmu.2018.03137)
 
 Host-parasite interaction and label-free proteomics study from Miguel's earlier work in biological sciences and proteomics.
-:::
-
-::: {.publication-card}
-### Proteome alterations in human autopsy tissues in relation to time after death
-**Kocsmar E., Schmid M., Cosenza-Contreras M. et al. 2023.** *Cellular and Molecular Life Sciences* 80:117. [DOI: 10.1007/s00018-023-04754-3](https://doi.org/10.1007/s00018-023-04754-3)
-
-Tissue proteomics study relevant to degradation, translational sample quality, and interpretation of post-mortem tissue proteomes.
 :::
 
 ## Profiles

@@ -159,8 +159,19 @@ h1, h2, h3 {
 .theme-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 1rem;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0 0.2rem;
+}
+
+.theme-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.theme-block .info-card {
+  flex: 1;
 }
 
 .theme-links p {
@@ -173,10 +184,10 @@ h1, h2, h3 {
   border-radius: 999px;
   color: #244f52;
   display: inline-flex;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1.35;
-  padding: 0.28rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 0.16rem 0.45rem;
   text-decoration: none;
 }
 
