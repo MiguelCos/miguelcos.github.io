@@ -3,9 +3,49 @@ title: "Publications"
 description: "Selected publications by Miguel Cosenza Contreras."
 ---
 
-Selected publications are listed first with a short note on their role in Miguel's research profile. DOI links are included where known and verified.
+Selected publications are grouped by the research applications they demonstrate. Metadata and links were checked against PubMed and publisher records.
 
-## Selected Publications
+## Featured Applications
+
+::: {.card-grid}
+::: {.publication-card}
+### A single-amino-acid cleavage controls global mitochondrial complex integrity
+**Kücükköse C. et al. 2026.** *Nature Structural & Molecular Biology*. [DOI: 10.1038/s41594-026-01876-7](https://doi.org/10.1038/s41594-026-01876-7) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/42675210/)
+
+An application of quantitative complexome profiling to show that loss of ICP55-mediated removal of one N-terminal amino acid causes widespread destabilization of human mitochondrial protein assemblies.
+:::
+
+::: {.publication-card}
+### Distinct Assembly Complexes Facilitate cbb~3~-type Cytochrome Oxidase Maturation
+**Shen K. et al. 2026.** *Journal of Molecular Biology* 438(19):169945. [DOI: 10.1016/j.jmb.2026.169945](https://doi.org/10.1016/j.jmb.2026.169945) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/42447953/)
+
+An application of complexome profiling to resolve stable bacterial cytochrome oxidase assembly intermediates and their roles in coordinated heme and copper insertion.
+:::
+
+::: {.publication-card}
+### Fractionated proteomics identifies a protein network mitigating resistance exercise-induced damage in human skeletal muscle
+**Kuppusamy M. et al. 2026.** *Nature Communications* 17:7110. [DOI: 10.1038/s41467-026-75501-y](https://doi.org/10.1038/s41467-026-75501-y) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/42521682/)
+
+Fractionated human muscle proteomics and phosphoproteomics identify a BAG3-linked network involved in adaptation to resistance exercise. The companion [Quarto/R analysis project](projects/bag3-fractionated-proteomics/) makes the missing-value imputation and differential-abundance workflow available for reuse.
+:::
+:::
+
+## Other Recent Publications
+
+- **Werner T. et al. 2026.** Proteomic characterization of intrahepatic cholangiocarcinoma identifies risk-stratifying subgroups and EIF4A1 as a therapeutic target. *Nature Communications* 17:2741. [DOI: 10.1038/s41467-026-70817-1](https://doi.org/10.1038/s41467-026-70817-1) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/41872184/)
+- **Cosenza-Contreras M., Huesgen P.F., Schilling O. 2025.** TermineR: Bioinformatic processing of shotgun proteomics data for the annotation and quantitation of protein termini. *Methods in Enzymology* 719:43-66. [DOI: 10.1016/bs.mie.2025.06.004](https://doi.org/10.1016/bs.mie.2025.06.004) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/40992848/)
+- **Tamilselvan R. et al. 2025.** Hunter-Dia: An updated protocol for enrichment and mass spectrometry-based identification of protein N-terminal peptides. *Methods in Enzymology* 719:25-42. [DOI: 10.1016/bs.mie.2025.06.025](https://doi.org/10.1016/bs.mie.2025.06.025) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/40992842/)
+- **Chaves A.F.A. et al. 2025.** Signatures of the Systemic Effects of a Snake Venom and Antivenom: Multiomics Profiling of the Kidney Pathology. *Molecular & Cellular Proteomics* 24(8):101023. [DOI: 10.1016/j.mcpro.2025.101023](https://doi.org/10.1016/j.mcpro.2025.101023) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/40582410/)
+- **Dinh T.-L.J. et al. 2025.** Proteomic analysis of non-muscle invasive and muscle invasive bladder cancer highlights distinct subgroups with metabolic, matrisomal, and immune hallmarks and emphasizes importance of the stromal compartment. *The Journal of Pathology* 265(1):41-56. [DOI: 10.1002/path.6367](https://doi.org/10.1002/path.6367) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/39582373/)
+- **Vogele D. et al. 2024.** Size exclusion chromatography based proteomic and degradomic profiling of inflammasome-activated, murine bone marrow-derived dendritic cells highlights complex retention and release of cleavage products. *Molecular Omics* 20(9):595-610. [DOI: 10.1039/D4MO00163J](https://doi.org/10.1039/D4MO00163J) | [PubMed](https://pubmed.ncbi.nlm.nih.gov/39378052/)
+
+## Preprints and Conference Contributions
+
+- **Lapčík P. et al. 2025.** LC-MS/MS-based terminomics unravels role of carboxypeptidase B1 in luminal A breast cancer. Conference abstract. [Publication record](https://www.muni.cz/en/research/publications/2537258)
+- **Steenbuck I.D. et al. 2024.** Serum Proteome Profiling Identifies N-Cadherin and C-Met as Early Marker Candidates of Therapeutic Response to Neoadjuvant Chemotherapy in Breast Cancer. *bioRxiv* preprint. [DOI: 10.1101/2024.05.24.595719](https://doi.org/10.1101/2024.05.24.595719)
+- **Werner T. et al. 2024.** Proteomic profiling of IDH-wildtype Glioblastoma Tissue and Serum uncovers prognostic Subtypes and Marker Candidates. *bioRxiv* preprint. [DOI: 10.1101/2024.02.29.582688](https://doi.org/10.1101/2024.02.29.582688)
+
+## Established Selected Publications
 
 ::: {.publication-card}
 ### TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data
@@ -38,8 +78,8 @@ Tissue proteomics study relevant to degradation, translational sample quality, a
 ## Profiles
 
 - [ORCID](https://orcid.org/0000-0002-9727-3229)
-- [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl)
+- [Google Scholar](https://scholar.google.com/citations?user=DbsUEGsAAAAJ&hl=es)
 
 ## Expanded List
 
-The selected list above is intentionally compact. Future updates can expand this page using ORCID, Google Scholar, PubMed, Crossref, or manually curated BibTeX/CSL metadata.
+The list above highlights recent and representative work. See the linked profiles for the full publication record.

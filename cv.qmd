@@ -70,6 +70,9 @@ Five-year program. 2nd in promotion.
 
 ## Selected Publications
 
+- Kücükköse C. et al. 2026. A single-amino-acid cleavage controls global mitochondrial complex integrity. *Nature Structural & Molecular Biology*. [DOI: 10.1038/s41594-026-01876-7](https://doi.org/10.1038/s41594-026-01876-7).
+- Shen K. et al. 2026. Distinct Assembly Complexes Facilitate cbb~3~-type Cytochrome Oxidase Maturation. *Journal of Molecular Biology* 438(19):169945. [DOI: 10.1016/j.jmb.2026.169945](https://doi.org/10.1016/j.jmb.2026.169945).
+- Kuppusamy M. et al. 2026. Fractionated proteomics identifies a protein network mitigating resistance exercise-induced damage in human skeletal muscle. *Nature Communications* 17:7110. [DOI: 10.1038/s41467-026-75501-y](https://doi.org/10.1038/s41467-026-75501-y).
 - Cosenza-Contreras M. et al. 2024. TermineR: Extracting information on endogenous proteolytic processing from shotgun proteomics data. *Proteomics* 24(19). [DOI: 10.1002/pmic.202300491](https://doi.org/10.1002/pmic.202300491).
 - Cosenza-Contreras M. et al. 2024. Proteometabolomics of initial and recurrent glioblastoma highlights an increased immune cell signature with altered lipid metabolism. *Neuro-Oncology* 26(3):488-502. [DOI: 10.1093/neuonc/noad208](https://doi.org/10.1093/neuonc/noad208).
 - Cosenza-Contreras M. et al. 2018/2019. The Schistosomiasis SpleenOME: Unveiling the Proteomic Landscape of Splenomegaly Using Label-Free Mass Spectrometry. *Frontiers in Immunology* 9:3137. [DOI: 10.3389/fimmu.2018.03137](https://doi.org/10.3389/fimmu.2018.03137).

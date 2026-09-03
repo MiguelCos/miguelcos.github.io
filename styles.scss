@@ -156,6 +156,37 @@ h1, h2, h3 {
   padding: 0.18rem 0.55rem;
 }
 
+.theme-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+
+.theme-links p {
+  display: contents;
+}
+
+.theme-link {
+  background: var(--site-accent-soft);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #244f52;
+  display: inline-flex;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  padding: 0.28rem 0.65rem;
+  text-decoration: none;
+}
+
+.theme-link:hover,
+.theme-link:focus-visible {
+  background: #fff;
+  border-color: var(--site-accent);
+  color: var(--site-accent);
+}
+
 .cv-section {
   border-top: 1px solid var(--site-border);
   padding-top: 1.25rem;

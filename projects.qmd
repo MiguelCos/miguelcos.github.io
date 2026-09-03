@@ -7,6 +7,17 @@ Selected public GitHub projects related to proteomics bioinformatics, terminomic
 
 ::: {.card-grid}
 ::: {.project-card}
+### BAG3 Fractionated Proteomics Analysis
+Reproducible Quarto/R workflow for missing-value imputation and differential-abundance analysis of BAG3-TurboID proteomics data, published alongside the human skeletal-muscle fractionation study.
+
+:::{.tags}
+[`Quarto`]{.tag} [`R`]{.tag} [`fractionated proteomics`]{.tag} [`reproducibility`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/BAG3_turboID_proteomics-Differential-abundance-analysis) | [Publication](https://doi.org/10.1038/s41467-026-75501-y) | [Project page](projects/bag3-fractionated-proteomics/)
+:::
+
+::: {.project-card}
 ### Standardized Clinical Data Reproducibility Demo
 R and Quarto learning demonstrator showing traceable transformation of public standardized clinical-trial test data into analysis-ready structures, automated validation, and reproducible Tables, Listings, and Figures.
 
@@ -110,4 +121,3 @@ Collection of scripts, functions, and snippets for processing and analyzing prot
 
 - [Fragterminomics](https://github.com/MiguelCos/Fragterminomics)
 - [fragenterminomics](https://github.com/MiguelCos/fragenterminomics)
-- [BAG3 turboID proteomics differential abundance analysis](https://github.com/MiguelCos/BAG3_turboID_proteomics-Differential-abundance-analysis)

@@ -1,0 +1,25 @@
+---
+title: "BAG3 Fractionated Proteomics Analysis"
+description: "Reproducible Quarto and R analysis supporting a fractionated human skeletal-muscle proteomics study."
+---
+
+This public analysis project accompanies the 2026 *Nature Communications* study, “Fractionated proteomics identifies a protein network mitigating resistance exercise-induced damage in human skeletal muscle.”
+
+The study combines fractionation of human skeletal-muscle samples with proteomics and phosphoproteomics to examine adaptation to resistance exercise and identify proteins associated with the sarcomeric response. The analysis repository documents the BAG3-TurboID proteomics workflow used for missing-value imputation and differential-abundance analysis.
+
+## Reproducibility Highlights
+
+- Quarto notebook combining narrative, code, and results.
+- R code for a two-step missing-value imputation strategy.
+- Differential-abundance analysis of BAG3 proximity-biotinylation proteomics data.
+- Direct connection between the published study and its computational workflow.
+
+## Links
+
+- [GitHub repository](https://github.com/MiguelCos/BAG3_turboID_proteomics-Differential-abundance-analysis)
+- [Publication DOI](https://doi.org/10.1038/s41467-026-75501-y)
+- [PubMed record](https://pubmed.ncbi.nlm.nih.gov/42521682/)
+
+:::{.tags}
+[`Quarto`]{.tag} [`R`]{.tag} [`proteomics`]{.tag} [`differential abundance`]{.tag} [`reproducible research`]{.tag}
+:::
