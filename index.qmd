@@ -52,7 +52,7 @@ Each theme links to representative projects and selected publications.
 Pipelines for studying protein-protein interactions from shotgun mass-spectrometry-based proteomics data, including complexome and co-immunoprecipitation experiments.
 
 :::{.theme-links}
-[ICP55 complex integrity](https://doi.org/10.1038/s41594-026-01876-7){.theme-link} [cbb~3~ oxidase assembly](https://doi.org/10.1016/j.jmb.2026.169945){.theme-link} [Inflammasome SEC-MS](https://doi.org/10.1039/D4MO00163J){.theme-link} [Complexome viewer](projects/drug-response-complexome/){.theme-link}
+[ICP55 complex integrity](https://doi.org/10.1038/s41594-026-01876-7){.theme-link} [cbb~3~ oxidase assembly](https://doi.org/10.1016/j.jmb.2026.169945){.theme-link} [Complexome viewer](projects/drug-response-complexome/){.theme-link}
 :::
 :::
 
@@ -61,7 +61,7 @@ Pipelines for studying protein-protein interactions from shotgun mass-spectromet
 Bioinformatic analysis of proteolytic activity, protein termini, and degradomics workflows across experimental systems.
 
 :::{.theme-links}
-[TermineR publication](https://doi.org/10.1002/pmic.202300491){.theme-link} [TermineR repository](https://github.com/MiguelCos/TermineR){.theme-link} [HUNTER repository](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline){.theme-link} [TermineR book chapter](https://doi.org/10.1016/bs.mie.2025.06.004){.theme-link} [HUNTER-DIA book chapter](https://doi.org/10.1016/bs.mie.2025.06.025){.theme-link} [CPB1 breast-cancer terminomics](https://www.muni.cz/en/research/publications/2537258){.theme-link}
+[TermineR publication](https://doi.org/10.1002/pmic.202300491){.theme-link} [TermineR repository](https://github.com/MiguelCos/TermineR){.theme-link} [HUNTER repository](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline){.theme-link} [TermineR book chapter](https://doi.org/10.1016/bs.mie.2025.06.004){.theme-link} [HUNTER-DIA book chapter](https://doi.org/10.1016/bs.mie.2025.06.025){.theme-link} [CPB1 breast-cancer terminomics](https://www.muni.cz/en/research/publications/2537258){.theme-link} [Inflammasome SEC-MS](https://doi.org/10.1039/D4MO00163J){.theme-link}
 :::
 :::
 
