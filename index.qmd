@@ -98,7 +98,7 @@ Translational biomarker discovery and disease-mechanism studies using mass-spect
 :::
 
 :::{.theme-links}
-[BAG3 project](projects/bag3-fractionated-proteomics/){.theme-link} [Cholangiocarcinoma](https://doi.org/10.1038/s41467-026-70817-1){.theme-link} [GBM project](projects/gbm-proteometabolomics/){.theme-link}
+[GBM project](projects/gbm-proteometabolomics/){.theme-link} [Cholangiocarcinoma](https://doi.org/10.1038/s41467-026-70817-1){.theme-link} [Dinh bladder-cancer paper](https://doi.org/10.1002/path.6367){.theme-link} [Steenbuck breast-cancer preprint](https://doi.org/10.1101/2024.05.24.595719){.theme-link} [Werner GBM preprint](https://doi.org/10.1101/2024.02.29.582688){.theme-link}
 :::
 :::
 :::
@@ -187,5 +187,27 @@ Quarto and R workflows for exploratory and inferential analysis of HUNTER termin
 :::
 
 [GitHub](https://github.com/MiguelCos/HUNTER_data_analysis_pipeline) | [Project page](projects/hunter/)
+:::
+
+::: {.project-card}
+### Drug-Response Complexome Screening Viewer
+Interactive scientific data product for exploring perturbation-dependent protein-complex organization in public SEC-MS complexome data.
+
+:::{.tags}
+[`SEC-MS`]{.tag} [`complexome`]{.tag} [`interactive viewer`]{.tag}
+:::
+
+[Project page](projects/drug-response-complexome/)
+:::
+
+::: {.project-card}
+### Standardized Clinical Data Reproducibility Demo
+R and Quarto demonstrator for traceable clinical-data transformations, automated validation, and reproducible Tables, Listings, and Figures using public synthetic data.
+
+:::{.tags}
+[`R`]{.tag} [`clinical data`]{.tag} [`validation`]{.tag} [`reproducibility`]{.tag}
+:::
+
+[GitHub](https://github.com/MiguelCos/clinical-data-reproducibility-demo) | [Live report](https://miguelcos.github.io/clinical-data-reproducibility-demo/) | [Project page](projects/clinical-data-reproducibility/)
 :::
 :::
